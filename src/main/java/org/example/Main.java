@@ -2,6 +2,7 @@ package org.example;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 class Main {
@@ -16,6 +17,12 @@ class Main {
 
     public static int result = -1;
 
+    public static boolean[] visit = new boolean[105];
+
+
+    public static void init() {
+        Arrays.fill(visit, false);
+    }
 
     public static void input() {
         n = sc.nextInt();
@@ -26,18 +33,26 @@ class Main {
         }
     }
 
-    public static void solve() {
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    if (list.get(i) + list.get(j) + list.get(k) <= m) {
-                        if (result < list.get(i) + list.get(j) + list.get(k)) {
-                            result = list.get(i) + list.get(j) + list.get(k);
-                        }
-                    }
-                }
+    //   방법2: 재귀함수 방식
+    public static void solve(int cnt, int sum, int idx) {
+        if (cnt == 3) {
+            if (result < sum && sum <= m) {
+                result = sum;
             }
+            return;
         }
+
+        for (int i = idx + 1; i < n; i++) {
+
+            if (visit[i] == false) {
+                visit[i] = true;
+                solve(cnt + 1, sum + list.get(i), i);
+                visit[i] = false;
+            }
+
+        }
+
+
     }
 
     public static void output() {
@@ -46,8 +61,17 @@ class Main {
 
     public static void main(String[] args) {
 
+        init();
         input();
-        solve();
+
+
+        for (int i = 0; i < n; i++) {
+            visit[i] = true;
+            solve(1, list.get(i), i);
+            visit[i] = false;
+        }
+
+
         output();
 
     }
