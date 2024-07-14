@@ -1,50 +1,57 @@
 package org.example;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Main {
 
     public static Scanner sc = new Scanner(System.in);
 
-    public static int v = 0;
+    public static int n = 0;
 
-    public static int a = 0;
+    public static int m = 0;
 
-    public static int b = 0;
+    public static ArrayList<Integer> list = new ArrayList<>();
 
-    public static int result = 0;
-    public static void main(String[] args) {
+    public static int result = -1;
 
-        input();
-        solve();
-        output();
+
+    public static void input() {
+        n = sc.nextInt();
+        m = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            int i1 = sc.nextInt();
+            list.add(i1);
+        }
     }
 
     public static void solve() {
-
-        result = (v - b) / ( a- b);
-
-        int remain = ( v - b) % ( a- b);
-        if (remain == 0) {
-            result = (v - b) / (a - b);
-        } else {
-            result = (v - b) / (a - b) + 1;
-
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    if (list.get(i) + list.get(j) + list.get(k) <= m) {
+                        if (result < list.get(i) + list.get(j) + list.get(k)) {
+                            result = list.get(i) + list.get(j) + list.get(k);
+                        }
+                    }
+                }
+            }
         }
-
-    }
-
-    public static void input() {
-        a = sc.nextInt();
-        b = sc.nextInt();
-        v = sc.nextInt();
     }
 
     public static void output() {
         System.out.println(result);
     }
 
+    public static void main(String[] args) {
+
+        input();
+        solve();
+        output();
+
+    }
 }
+
 
 
