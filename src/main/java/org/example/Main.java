@@ -1,78 +1,60 @@
 package org.example;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 class Main {
 
+    public static int a;
+
+    public static int b;
+
+    public static int c;
+
+    public static int d;
+
+    public static int e;
+
+    public static int f;
+
     public static Scanner sc = new Scanner(System.in);
 
-    public static int n = 0;
+    public static int x;
 
-    public static int m = 0;
-
-    public static ArrayList<Integer> list = new ArrayList<>();
-
-    public static int result = -1;
-
-    public static boolean[] visit = new boolean[105];
-
-
-    public static void init() {
-        Arrays.fill(visit, false);
+    public static int y;
+    public static void main(String[] args) {
+        input();
+        solve();
+        output();
     }
 
     public static void input() {
-        n = sc.nextInt();
-        m = sc.nextInt();
-        for (int i = 0; i < n; i++) {
-            int i1 = sc.nextInt();
-            list.add(i1);
-        }
+        a = sc.nextInt();
+        b = sc.nextInt();
+        c = sc.nextInt();
+        d = sc.nextInt();
+        e = sc.nextInt();
+        f = sc.nextInt();
     }
 
-    //   방법2: 재귀함수 방식
-    public static void solve(int cnt, int sum, int idx) {
-        if (cnt == 3) {
-            if (result < sum && sum <= m) {
-                result = sum;
+    public static void solve() {
+
+        for (int i = -999; i <= 999; i++) {
+            for (int j = -999; j <= 999; j++) {
+                if (i * a + j * b == c && i * d + j * e == f) {
+                    x= i;
+                    y= j;
+                    break;
+                }
             }
-            return;
         }
 
-        for (int i = idx + 1; i < n; i++) {
-
-            if (visit[i] == false) {
-                visit[i] = true;
-                solve(cnt + 1, sum + list.get(i), i);
-                visit[i] = false;
-            }
-
-        }
 
 
     }
 
     public static void output() {
-        System.out.println(result);
-    }
-
-    public static void main(String[] args) {
-
-        init();
-        input();
-
-
-        for (int i = 0; i < n; i++) {
-            visit[i] = true;
-            solve(1, list.get(i), i);
-            visit[i] = false;
-        }
-
-
-        output();
+        System.out.println(x + " " + y);
 
     }
 }
