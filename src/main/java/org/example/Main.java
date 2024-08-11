@@ -1,40 +1,81 @@
 package org.example;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 class Main {
 
-    public static int t;
-
     public static Scanner sc = new Scanner(System.in);
 
+    public static int n = 0;
+
+    public static int m = 0;
+
+    public static ArrayList<Integer> list = new ArrayList<>();
+
+    public static int result = -1;
+
+    public static boolean[] visit = new boolean[105];
+
+
+    public static void init() {
+        Arrays.fill(visit, false);
+    }
+
+    public static void input() {
+        n = sc.nextInt();
+        m = sc.nextInt();
+        for (int i = 0; i < n; i++) {
+            int i1 = sc.nextInt();
+            list.add(i1);
+        }
+    }
+
+    //   방법2: 재귀함수 방식
+    public static void solve(int cnt, int sum, int idx) {
+        if (cnt == 3) {
+            if (result < sum && sum <= m) {
+                result = sum;
+            }
+            return;
+        }
+
+        for (int i = idx + 1; i < n; i++) {
+
+            if (visit[i] == false) {
+                visit[i] = true;
+                solve(cnt + 1, sum + list.get(i), i);
+                visit[i] = false;
+            }
+
+        }
+
+
+    }
+
+    public static void output() {
+        System.out.println(result);
+    }
 
     public static void main(String[] args) {
 
-        solve();
+        init();
+        input();
 
-    }
 
-    public static void solve() {
-        t = sc.nextInt();
-
-        for (int i = 0; i < t; i++) {
-            int c = sc.nextInt();
-
-            int q = c/ 25;
-            c = c%25;
-            int d =  c/10;
-            c = c%10;
-            int n =  c/5;
-            c = c%5;
-            int p = c/1;
-            c = c%1;
-
-            System.out.println(q + " " + d + " " + n + " " + p);
+        for (int i = 0; i < n; i++) {
+            visit[i] = true;
+            solve(1, list.get(i), i);
+            visit[i] = false;
         }
+
+
+        output();
 
     }
 }
+
 
 
