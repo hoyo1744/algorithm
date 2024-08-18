@@ -1,60 +1,96 @@
 package org.example;
 
 
+// 영화감독 숌
+
+
+import java.io.*;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 class Main {
 
-    public static int a;
+    public static int n;
 
-    public static int b;
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static int c;
+    public static BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int d;
+    public static int result;
+    public static void main(String[] args) throws IOException {
 
-    public static int e;
+        init();
 
-    public static int f;
-
-    public static Scanner sc = new Scanner(System.in);
-
-    public static int x;
-
-    public static int y;
-    public static void main(String[] args) {
         input();
         solve();
         output();
     }
 
-    public static void input() {
-        a = sc.nextInt();
-        b = sc.nextInt();
-        c = sc.nextInt();
-        d = sc.nextInt();
-        e = sc.nextInt();
-        f = sc.nextInt();
+    public static void init() {
+        n = 0;
+        result = 0;
+    }
+
+    public static void input() throws IOException {
+        String s = br.readLine();
+        StringTokenizer st = new StringTokenizer(s);
+        n = Integer.parseInt(st.nextToken());
     }
 
     public static void solve() {
 
-        for (int i = -999; i <= 999; i++) {
-            for (int j = -999; j <= 999; j++) {
-                if (i * a + j * b == c && i * d + j * e == f) {
-                    x= i;
-                    y= j;
-                    break;
-                }
+        int num = 1;
+        int cnt = 0;
+
+        while (true) {
+            if (true == check666(num)) {
+                cnt++;
             }
+
+
+            if (cnt == n) {
+                result = num;
+                break;
+            }
+
+            num++;
+        }
+    }
+
+    public static void output() throws IOException {
+        wr.write(String.valueOf(result));
+        wr.flush();
+    }
+
+    public static boolean check666(int num) {
+
+        int continueNum = 0;
+
+        int temp = num;
+
+        while (true) {
+
+            if (temp == 0) {
+                break;
+            }
+
+            int div = temp % 10;
+
+            if (div == 6) {
+                continueNum++;
+            } else {
+                continueNum = 0;
+            }
+
+            if (continueNum >= 3) {
+                return true;
+            }
+
+            temp /= 10;
         }
 
 
-
-    }
-
-    public static void output() {
-        System.out.println(x + " " + y);
+        return false;
 
     }
 }
