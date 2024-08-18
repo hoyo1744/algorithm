@@ -33,6 +33,10 @@ class Main {
             list.remove(list.size() - 1);
         }
 
+        bw.flush();
+
+
+
     }
 
     public static void input() throws IOException {
@@ -45,20 +49,25 @@ class Main {
         m = Integer.parseInt(st.nextToken());
     }
 
-    public static void solve(int num, int dist) {
+    public static void solve(int num, int dist) throws IOException{
 
         if (dist == m) {
             for (Integer i : list) {
-                System.out.print(i+ " ");
+                bw.write(String.valueOf(i));
+                bw.write(" ");
             }
-            System.out.print("\n");
+            bw.write("\n");
+
+
             return;
         }
 
         for (int i = 1; i <= n; i++) {
-            list.add(i);
-            solve(i, dist + 1);
-            list.remove(list.size() - 1);
+            if (dist + 1 <= m) {
+                list.add(i);
+                solve(i, dist + 1);
+                list.remove(list.size() - 1);
+            }
         }
     }
 
