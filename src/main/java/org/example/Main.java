@@ -1,96 +1,63 @@
 package org.example;
 
 
-// 영화감독 숌
+// 설탕 배달
+// 완전탐색으로 풀 경우, 최대 2^1666의 시간복잡도를 갖는다.
+// 그래서 완전탐색은 안되고, 그리디로 풀어야함.
 
 
 import java.io.*;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 class Main {
-
-    public static int n;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int result;
+    public static int n;
+
+    public static int result = Integer.MAX_VALUE;
+
+
     public static void main(String[] args) throws IOException {
-
-        init();
-
         input();
         solve();
         output();
     }
 
-    public static void init() {
-        n = 0;
-        result = 0;
-    }
-
-    public static void input() throws IOException {
-        String s = br.readLine();
-        StringTokenizer st = new StringTokenizer(s);
-        n = Integer.parseInt(st.nextToken());
-    }
-
-    public static void solve() {
-
-        int num = 1;
-        int cnt = 0;
-
-        while (true) {
-            if (true == check666(num)) {
-                cnt++;
-            }
-
-
-            if (cnt == n) {
-                result = num;
-                break;
-            }
-
-            num++;
-        }
-    }
-
     public static void output() throws IOException {
-        wr.write(String.valueOf(result));
+        if (result == Integer.MAX_VALUE) {
+            wr.write("-1");
+        } else {
+            wr.write(String.valueOf(result));
+        }
         wr.flush();
     }
 
-    public static boolean check666(int num) {
+    public static void input() throws IOException {
+        String in = br.readLine();
 
-        int continueNum = 0;
+        StringTokenizer st = new StringTokenizer(in);
 
-        int temp = num;
+        n = Integer.parseInt(st.nextToken());
 
-        while (true) {
+    }
 
-            if (temp == 0) {
+    public static void solve() {
+        int num = n / 5;
+
+
+
+
+
+        for (int i = num; i >= 0; i--) {
+            int div = n - i*5;
+            if (div % 3 == 0) {
+                result = i + div/3;
                 break;
             }
-
-            int div = temp % 10;
-
-            if (div == 6) {
-                continueNum++;
-            } else {
-                continueNum = 0;
-            }
-
-            if (continueNum >= 3) {
-                return true;
-            }
-
-            temp /= 10;
         }
-
-
-        return false;
 
     }
 }
