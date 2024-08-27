@@ -1,10 +1,9 @@
 package org.example;
 
 
-// n과 m(4)
-
 import java.io.*;
 import java.util.*;
+
 
 
 class Main {
@@ -12,57 +11,83 @@ class Main {
     public static int n;
 
     public static int m;
-    public static Scanner sc = new Scanner(System.in);
-    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static ArrayList<Integer> list = new ArrayList<>();
+
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(System.out));
+
+    public static ArrayList<Integer> arr = new ArrayList();
+
+    public static ArrayList<Integer> result = new ArrayList();
+
+    public static boolean[] visit = new boolean[10005];
 
     public static void main(String[] args) throws IOException {
-
         input();
 
-        for (int i = 1; i <= n; i++) {
-            list.add(i);
-            solve(i, 1);
-            list.remove(list.size() - 1);
+
+        for (int i = 0; i < arr.size(); i++) {
+            visit[arr.get(i)] = true;
+            result.add(arr.get(i));
+            solve(1);
+            visit[arr.get(i)] = false;
+            result.remove(result.size() - 1);
         }
 
-        bw.flush();
-
+        wr.flush();
 
     }
 
     public static void input() throws IOException {
-        String in = br.readLine();
 
-        StringTokenizer st = new StringTokenizer(in);
+        String str = br.readLine();
+
+        StringTokenizer st = new StringTokenizer(str);
         n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt( st.nextToken());
+
+        str = br.readLine();
+        st = new StringTokenizer(str);
+
+        while (st.hasMoreTokens()) {
+            arr.add(Integer.parseInt(st.nextToken()));
+        }
+
+        arr.sort(Comparator.naturalOrder());
 
     }
 
-    public static void solve(int num, int dist) throws IOException {
+    public static void solve(int count) throws IOException{
 
-        if (dist == m) {
-            for (Integer i : list) {
-                bw.write(String.valueOf(i));
-                bw.write(" ");
+        if (count == m) {
+
+            for (int i = 0; i < result.size(); i++) {
+
+                wr.write(String.valueOf(result.get(i)));
+                wr.write(" ");
             }
-            bw.write("\n");
-
+            wr.write("\n");
             return;
         }
 
-        for (int i = num; i <= n; i++) {
-            if (dist + 1 <= m) {
-                list.add(i);
-                solve(i, dist + 1);
-                list.remove(list.size() - 1);
+        for (int i = 0; i < n; i++) {
+            if (visit[arr.get(i)] == false) {
+                visit[arr.get(i)] = true;
+                result.add(arr.get(i));
+                solve(count + 1);
+                visit[arr.get(i)] = false;
+                result.remove(result.size() - 1);
             }
         }
 
+
+
+
     }
+
+
+
+
 }
 
 
