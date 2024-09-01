@@ -1,57 +1,56 @@
 package org.example;
 
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 class Main {
 
-    public static ArrayList<Integer> list = new ArrayList<>();
+    public static int n;
+
+    public static int k;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int sum = 0;
+    public static ArrayList<Integer> list = new ArrayList<>();
 
-    public static int avg = 0;
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         input();
-
 
     }
 
     public static void input() throws IOException {
 
+        String str = br.readLine();
 
-        for (int i = 0; i < 5; i++) {
-            String str = br.readLine();
-            StringTokenizer  st = new StringTokenizer(str);
+        StringTokenizer st = new StringTokenizer(str);
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        str = br.readLine();
+        st = new StringTokenizer(str);
+
+
+        while (st.hasMoreTokens()) {
 
             int next = Integer.parseInt(st.nextToken());
 
             list.add(next);
-            sum += next;
         }
 
-        list.sort(Comparator.naturalOrder());
-
-        avg = sum / 5;
+        list.sort(Comparator.reverseOrder());
 
 
-        bw.write(String.valueOf(avg));
-        bw.write("\n");
-        bw.write(String.valueOf(list.get(2)));
-
+        bw.write(String.valueOf(list.get(k - 1)));
         bw.flush();
 
+
     }
-
-
-
-
-
 
 
 }
