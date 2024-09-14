@@ -1,94 +1,98 @@
 package org.example;
 
 
+
+
 import java.util.*;
 import java.io.*;
 
+
 class Main {
-
-
-    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static int n;
 
-    public static ArrayList<Person> list = new ArrayList<>();
+    public static int m;
 
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static class Person implements Comparable<Person>{
+    public static BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int age;
-        String name;
-        int seq;
+    public static ArrayList<Integer> jewels = new ArrayList<>();
 
-        public Person(int age, String name, int seq){
-            this.age = age;
-            this.name = name;
-            this.seq = seq;
-        }
+    public static long result = Integer.MAX_VALUE;
 
-
-        @Override
-        public int compareTo(Person p){
-            if ( this.age == p.age){
-                return this.seq - p.seq;
-            }
-
-            return this.age - p.age;
-        }
-
-        @Override
-        public String toString(){
-            return this.age + " " + this.name;
-        }
-    }
+    public static long maxJewel = Integer.MIN_VALUE;
 
 
 
-    public static void  main(String args[]) throws IOException{
+    public static void main(String[] args) throws IOException{
 
         input();
         solve();
         output();
-
     }
 
-    public static void input() throws IOException{
+    public static void input() throws  IOException{
         String str = br.readLine();
 
-        n = Integer.parseInt(str);
+        StringTokenizer st = new StringTokenizer(str);
 
-        for (int i = 0; i < n; i++) {
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
+        for (int i = 0; i < m; i++) {
             str = br.readLine();
+            int value = Integer.parseInt(str);
 
-            StringTokenizer st = new StringTokenizer(str);
+            if ( value > maxJewel){
+                maxJewel = value;
+            }
 
-            int age = Integer.parseInt(st.nextToken());
-            int seq = i;
-            String name = st.nextToken();
-
-            Person person = new Person(age, name, seq);
-
-            list.add(person);
+            jewels.add(value);
         }
     }
 
-    public static void solve() {
-        list.sort(Comparator.naturalOrder());
-    }
+    public static void solve(){
 
-    public static void output() throws IOException {
-        for (int i = 0; i < list.size(); i++) {
-            bw.write(list.get(i).toString());
-            bw.write("\n");
+        long left = 1;
+
+        long right = maxJewel;
+
+        while(left <= right){
+
+            long mid = left + (right - left) / 2;
+
+            long temp = 0;
+
+            for (int i = 0; i < m; i++) {
+                temp +=  jewels.get(i)/ mid;
+
+                if (jewels.get(i) % mid != 0) {
+                    temp++;
+                }
+            }
+
+            if (temp <= n) {
+                if ( result > mid){
+                    result = mid;
+                }
+
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+
+
+            }
+
         }
 
+
+    }
+
+    public static void output() throws IOException{
+        bw.write(String.valueOf(result));
         bw.flush();
     }
-
-
 
 }
 
