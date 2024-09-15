@@ -2,26 +2,24 @@ package org.example;
 
 
 
-
 import java.util.*;
 import java.io.*;
-
 
 class Main {
 
     public static int n;
 
-    public static int m;
+    public static ArrayList<Integer> list = new ArrayList<>();
+
+    public static ArrayList<Integer> listNoDuplicated = new ArrayList<>();
+
+    public static HashMap<Integer, Boolean> duplicated = new HashMap<>();
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static BufferedWriter bw= new BufferedWriter(new OutputStreamWriter(System.out));
+    public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static ArrayList<Integer> jewels = new ArrayList<>();
-
-    public static long result = Integer.MAX_VALUE;
-
-    public static long maxJewel = Integer.MIN_VALUE;
+    public static HashMap<Integer, Integer> result = new HashMap<>();
 
 
 
@@ -30,69 +28,87 @@ class Main {
         input();
         solve();
         output();
+
     }
 
-    public static void input() throws  IOException{
+
+    public static void input() throws  IOException {
         String str = br.readLine();
 
+        n = Integer.parseInt(str);
+
+        str = br.readLine();
         StringTokenizer st = new StringTokenizer(str);
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < n; i++) {
+            int value = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < m; i++) {
-            str = br.readLine();
-            int value = Integer.parseInt(str);
-
-            if ( value > maxJewel){
-                maxJewel = value;
+            if(Objects.isNull(duplicated.get(value))){
+                duplicated.put(value, true);
+                listNoDuplicated.add(value);
             }
 
-            jewels.add(value);
+            list.add(value);
         }
     }
 
-    public static void solve(){
+    public static int binarySearch(int value) {
 
-        long left = 1;
+        int left = 1;
+        int right = listNoDuplicated.size() - 1;
 
-        long right = maxJewel;
+        int ret = 0;
 
-        while(left <= right){
+        while (left <= right) {
 
-            long mid = left + (right - left) / 2;
+            int mid = left + ( right - left) / 2;
 
-            long temp = 0;
-
-            for (int i = 0; i < m; i++) {
-                temp +=  jewels.get(i)/ mid;
-
-                if (jewels.get(i) % mid != 0) {
-                    temp++;
-                }
+            if (listNoDuplicated.get(mid) == value) {
+                ret =  mid;
+                break;
             }
 
-            if (temp <= n) {
-                if ( result > mid){
-                    result = mid;
-                }
+            if (listNoDuplicated.get(mid) < value) {
+                left = mid + 1;
+            } else {
 
                 right = mid - 1;
-            } else {
-                left = mid + 1;
-
 
             }
-
         }
 
+        return ret;
+    }
+
+    public static void solve() {
+
+        // 1. 중복제거된 리스트 정렬
+        listNoDuplicated.sort(Comparator.naturalOrder());
+
+        // 2. 중복제거된 리스트에 대해서 이분탐색 결과 : 정답
+
+        for (int i = 0; i < listNoDuplicated.size(); i++) {
+            //int idx = binarySearch(listNoDuplicated.get(i));
+            result.put(listNoDuplicated.get(i), i);
+        }
 
     }
 
-    public static void output() throws IOException{
-        bw.write(String.valueOf(result));
+    public static void output() throws IOException {
+
+        for (int i = 0; i < list.size(); i++) {
+            int count = result.get(list.get(i));
+
+            bw.write(String.valueOf(count));
+            bw.write(" ");
+        }
+
         bw.flush();
+
     }
+
+
+
 
 }
 
