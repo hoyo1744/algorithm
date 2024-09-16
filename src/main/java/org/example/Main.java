@@ -1,53 +1,67 @@
 package org.example;
 
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 class Main {
 
     public static int n;
-    public static int m;
+
+    public static HashMap<String, Boolean> visit = new HashMap<>();
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int result;
-
-    public static HashMap<String, Boolean> s = new HashMap<>();
 
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws IOException{
         String str = br.readLine();
 
-        StringTokenizer st = new StringTokenizer(str);
-
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(str);
 
         for (int i = 0; i < n; i++) {
             str = br.readLine();
 
-            s.put(str, true);
+            StringTokenizer st = new StringTokenizer(str);
+
+
+            String name = st.nextToken();
+
+            String log = st.nextToken();
+
+
+            if (log.equals("enter")) {
+                visit.put(name, true);
+            } else {
+                visit.remove(name);
+            }
         }
 
-        for (int i = 0; i < m; i++) {
-            str = br.readLine();
 
-            if (s.get(str) != null) {
-                result++;
+        Set<String> names = visit.keySet();
+
+        List<String> result = names.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+
+        if (result.size() != 0) {
+            for (int i = 0; i < result.size(); i++) {
+                bw.write(result.get(i));
+                bw.write("\n");
             }
 
+            bw.flush();
+
         }
 
-        bw.write(String.valueOf(result));
 
-        bw.flush();
+
+
 
     }
+
+
 
 
 }
