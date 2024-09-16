@@ -1,114 +1,70 @@
 package org.example;
 
 
-
-import java.util.*;
 import java.io.*;
+import java.util.*;
+
 
 class Main {
 
+
     public static int n;
 
-    public static ArrayList<Integer> list = new ArrayList<>();
-
-    public static ArrayList<Integer> listNoDuplicated = new ArrayList<>();
-
-    public static HashMap<Integer, Boolean> duplicated = new HashMap<>();
+    public static int m;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static HashMap<Integer, Integer> result = new HashMap<>();
+    public static HashMap<Integer, Boolean> check = new HashMap<>();
 
+    public static ArrayList<Integer> result = new ArrayList<>();
 
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) throws IOException{
-
-        input();
-        solve();
-        output();
-
-    }
-
-
-    public static void input() throws  IOException {
         String str = br.readLine();
 
         n = Integer.parseInt(str);
 
         str = br.readLine();
+
         StringTokenizer st = new StringTokenizer(str);
 
-        for (int i = 0; i < n; i++) {
+        while (st.hasMoreTokens()) {
+            check.put(Integer.parseInt(st.nextToken()), true);
+        }
+
+
+
+        str = br.readLine();
+        m = Integer.parseInt(str);
+
+        str = br.readLine();
+
+        st = new StringTokenizer(str);
+
+        while(st.hasMoreTokens()){
             int value = Integer.parseInt(st.nextToken());
 
-            if(Objects.isNull(duplicated.get(value))){
-                duplicated.put(value, true);
-                listNoDuplicated.add(value);
-            }
-
-            list.add(value);
-        }
-    }
-
-    public static int binarySearch(int value) {
-
-        int left = 1;
-        int right = listNoDuplicated.size() - 1;
-
-        int ret = 0;
-
-        while (left <= right) {
-
-            int mid = left + ( right - left) / 2;
-
-            if (listNoDuplicated.get(mid) == value) {
-                ret =  mid;
-                break;
-            }
-
-            if (listNoDuplicated.get(mid) < value) {
-                left = mid + 1;
+            if (check.get(value) != null) {
+                result.add(1);
             } else {
-
-                right = mid - 1;
-
+                result.add(0);
             }
         }
 
-        return ret;
-    }
 
-    public static void solve() {
-
-        // 1. 중복제거된 리스트 정렬
-        listNoDuplicated.sort(Comparator.naturalOrder());
-
-        // 2. 중복제거된 리스트에 대해서 이분탐색 결과 : 정답
-
-        for (int i = 0; i < listNoDuplicated.size(); i++) {
-            //int idx = binarySearch(listNoDuplicated.get(i));
-            result.put(listNoDuplicated.get(i), i);
-        }
-
-    }
-
-    public static void output() throws IOException {
-
-        for (int i = 0; i < list.size(); i++) {
-            int count = result.get(list.get(i));
-
-            bw.write(String.valueOf(count));
-            bw.write(" ");
+        for (int i = 0; i < result.size(); i++) {
+            bw.write(String.valueOf(result.get(i)) + " ");
         }
 
         bw.flush();
 
+
+
+
+
+
     }
-
-
-
 
 }
 
