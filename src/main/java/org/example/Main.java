@@ -1,28 +1,49 @@
 package org.example;
 
 
-
-import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
+import java.io.*;
+
 
 
 class Main {
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int n;
+    public static int a;
 
-    public static int m;
+    public static int b;
 
-    public static HashMap<String, Integer> check = new HashMap<>();
+    public static Set<Integer> aSet = new HashSet<>();
 
-    public static ArrayList<String> resultName = new ArrayList<>();
+    public static Set<Integer> bSet = new HashSet<>();
 
-    public static int resultCount;
+    public static int result;
 
+    public static boolean binarySearch(int value, ArrayList<Integer> list, int maxValue) {
 
+        int left = 0;
+
+        int right = maxValue;
+
+        while (left <= right) {
+            int mid = left + ( right - left) / 2;
+
+            if (value < list.get(mid)) {
+                right = mid - 1;
+
+            } else if (value > list.get(mid)) {
+                left = mid + 1;
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public static void main(String[] args) throws IOException{
 
@@ -30,62 +51,65 @@ class Main {
 
         StringTokenizer st = new StringTokenizer(str);
 
-        n = Integer.parseInt(st.nextToken());
+        a = Integer.parseInt(st.nextToken());
+        b = Integer.parseInt(st.nextToken());
 
-        m = Integer.parseInt(st.nextToken());
+        String aStr = br.readLine();
+        st = new StringTokenizer(aStr);
+        for (int i = 0; i < a; i++) {
 
-
-        for (int i = 0; i < n; i++) {
-            str = br.readLine();
-            check.put(str, 1);
+            int aNum = Integer.parseInt(st.nextToken());
+            aSet.add(aNum);
         }
 
-        for (int i = 0; i < m; i++) {
-            str = br.readLine();
+        String bStr = br.readLine();
+        st = new StringTokenizer(bStr);
+        for (int i = 0; i < b; i++) {
 
+            int bNum = Integer.parseInt(st.nextToken());
+            bSet.add(bNum);
+        }
 
-            Integer count = check.get(str);
+        ArrayList<Integer> aList = (ArrayList<Integer>)aSet.stream().collect(Collectors.toList());
+        ArrayList<Integer> bList = (ArrayList<Integer>)bSet.stream().collect(Collectors.toList());
 
-            if (count == null) {
-                check.put(str, 1);
-            } else {
-                check.put(str, count + 1);
+        aList.sort(Comparator.naturalOrder());
+        bList.sort(Comparator.naturalOrder());
+
+        for (int i = 0; i < aList.size(); i++) {
+            int value = aList.get(i);
+
+            int maxValue = bList.size() - 1;
+
+            if (false == binarySearch(value, bList, maxValue)) {
+                result++;
             }
         }
 
-        Set<String> keys = check.keySet();
+        for (int i = 0; i < bList.size(); i++) {
+            int value = bList.get(i);
 
-        List<String> keyList = keys.stream().collect(Collectors.toList());
+            int maxValue = aList.size() - 1;
 
-
-
-        for (int i = 0; i < keyList.size(); i++) {
-            String key = keyList.get(i);
-
-            if (check.get(key) >= 2) {
-                resultName.add(key);
+            if (false == binarySearch(value, aList, maxValue)) {
+                result++;
             }
+
+
         }
 
-        resultCount = resultName.size();
 
-
-        resultName.sort(Comparator.naturalOrder());
-
-        bw.write(String.valueOf(resultCount));
-        bw.write("\n");
-
-        for (int i = 0; i < resultCount; i++) {
-
-            bw.write(resultName.get(i));
-            bw.write("\n");
-        }
-
+        bw.write(String.valueOf(result));
         bw.flush();
 
 
 
+
+
+
+
     }
+
 
 
 }
