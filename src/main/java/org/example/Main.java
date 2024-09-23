@@ -12,31 +12,51 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static HashSet<String> check = new HashSet<>();
-
-
+    public static int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return gcd(b, a%b);
+        }
+    }
 
     public static void main(String[] args) throws IOException{
 
-
         String str = br.readLine();
+        int n = Integer.parseInt(str);
 
-        for (int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < n; i++) {
+            str = br.readLine();
 
-            String msg = String.valueOf(str.charAt(i));
+            StringTokenizer st = new StringTokenizer(str);
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
-            check.add(msg);
+            int result = 0;
 
-            for (int j = i + 1; j < str.length(); j++) {
-                msg = msg + String.valueOf(str.charAt(j));
-                check.add(msg);
+            if (a < b) {
+                result = gcd(a, b);
+            } else {
+                result = gcd(b, a);
             }
+
+            result = a*b/result;
+
+            bw.write(String.valueOf(result));
+            bw.write("\n");
+
+
+
+
+
         }
 
-
-
-        bw.write(String.valueOf(check.size()));
         bw.flush();
+
+
+
+
+
     }
 
 
