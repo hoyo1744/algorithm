@@ -1,10 +1,10 @@
 package org.example;
 
 
+
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
-
 
 class Main {
 
@@ -12,56 +12,36 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int gcd(int a, int b) {
+    public static long getGcd(long a, long b) {
         if (b == 0) {
             return a;
         } else {
-            return gcd(b, a%b);
+            return getGcd(b, a%b);
         }
     }
 
     public static void main(String[] args) throws IOException{
 
         String str = br.readLine();
-        int n = Integer.parseInt(str);
 
-        for (int i = 0; i < n; i++) {
-            str = br.readLine();
-
-            StringTokenizer st = new StringTokenizer(str);
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-
-            int result = 0;
-
-            if (a < b) {
-                result = gcd(a, b);
-            } else {
-                result = gcd(b, a);
-            }
-
-            result = a*b/result;
-
-            bw.write(String.valueOf(result));
-            bw.write("\n");
+        StringTokenizer st = new StringTokenizer(str);
+        long a = Long.parseLong(st.nextToken());
+        long b = Long.parseLong(st.nextToken());
 
 
-
-
-
+        long gcd = 0;
+        if (a < b) {
+            gcd = getGcd(a, b);
+        } else {
+            gcd = getGcd(b, a);
         }
 
+        long lcd = a * b / gcd;
+
+        bw.write(String.valueOf(lcd));
         bw.flush();
 
-
-
-
-
     }
-
-
-
-
 
 }
 
