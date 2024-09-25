@@ -1,10 +1,10 @@
 package org.example;
 
 
-
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
+
 
 class Main {
 
@@ -12,7 +12,7 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static long getGcd(long a, long b) {
+    public static int getGcd(int a, int b) {
         if (b == 0) {
             return a;
         } else {
@@ -20,28 +20,60 @@ class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
+
 
         String str = br.readLine();
 
         StringTokenizer st = new StringTokenizer(str);
-        long a = Long.parseLong(st.nextToken());
-        long b = Long.parseLong(st.nextToken());
+        int a1 = Integer.parseInt(st.nextToken());
+        int b1 = Integer.parseInt(st.nextToken());
 
 
-        long gcd = 0;
-        if (a < b) {
-            gcd = getGcd(a, b);
+
+        str = br.readLine();
+        st = new StringTokenizer(str);
+        int a2 = Integer.parseInt(st.nextToken());
+        int b2 = Integer.parseInt(st.nextToken());
+
+        int gcd = 0;
+        if (b1 < b2) {
+            gcd = getGcd(b1, b2);
         } else {
-            gcd = getGcd(b, a);
+            gcd = getGcd(b2, b1);
         }
 
-        long lcd = a * b / gcd;
+        int lcd = b1 * b2 / gcd;
 
-        bw.write(String.valueOf(lcd));
+        int mod1 = lcd / b1;
+        int mod2 = lcd / b2;
+
+        int result1 = mod1 * a1  + mod2 * a2;
+
+
+        int mod = 0;
+        if (result1 < lcd) {
+            mod = getGcd(result1, lcd);
+        } else {
+            mod = getGcd(lcd, result1);
+        }
+
+
+
+
+        bw.write(String.valueOf(result1/mod));
+        bw.write(" ");
+        bw.write(String.valueOf(lcd/mod));
         bw.flush();
 
+
+
+
+
+
+
     }
+
 
 }
 
