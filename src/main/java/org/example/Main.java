@@ -1,9 +1,8 @@
 package org.example;
 
-
-import java.io.*;
 import java.util.*;
 import java.util.stream.*;
+import java.io.*;
 
 
 
@@ -13,53 +12,63 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static boolean isPrime(long value) {
+    public static int n;
 
-        if (value <= 1) {
-            return false;
-        }
+    public static int m;
 
-        for (long i = 2; i*i <= value; i++) {
-            if (value % i == 0) {
-                return false;
+    public static boolean[] noPrime = new boolean[1000005];
+
+    public static void eratostenes(int end) {
+
+
+        noPrime[0] = true;
+        noPrime[1] = true;
+
+
+        for (int i = 2; i <= end; i++) {
+
+            if (noPrime[i] == false) {
+                for (int j = i + i; j <= end; j += i) {
+                    noPrime[j] = true;
+
+                }
             }
         }
 
-        return true;
     }
 
-    public static long solve(long input) {
-
-        long start = input;
-
-        while (true) {
-            if (isPrime(start)) {
-                return start;
-            }
-            start += 1;
-        }
-    }
-
-
-
-    public static void main(String[] args) throws IOException{
-
-
+    public static void input() throws IOException{
         String str = br.readLine();
 
-        int n = Integer.parseInt(str);
 
-        for (int i = 0; i < n; i++) {
-            str = br.readLine();
-            long input = Long.parseLong(str);
-            long value = solve(input);
-            bw.write(String.valueOf(value));
-            bw.write("\n");
+        StringTokenizer st = new StringTokenizer(str);
+
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+
+    }
+
+    public static void solve() throws IOException {
+
+        eratostenes(m);
+
+        for (int i = n; i <= m; i++) {
+            if (noPrime[i] == false) {
+                bw.write(String.valueOf(i));
+                bw.write("\n");
+            }
         }
 
         bw.flush();
-
     }
+
+    public static void main(String[] args) throws IOException{
+
+        input();
+        solve();
+    }
+
 
 
 
