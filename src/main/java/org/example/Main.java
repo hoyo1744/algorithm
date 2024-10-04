@@ -1,12 +1,12 @@
 package org.example;
 
 
-
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
-class Main {
 
+
+class Main {
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -14,48 +14,66 @@ class Main {
 
 
 
-
     public static void main(String[] args) throws IOException{
 
-        String str = br.readLine();
 
-        int n = Integer.parseInt(str);
+        while (true) {
+            String str = br.readLine();
+
+            if (str.equals(".")) {
+                break;
+            }
+
+            Stack<Character> stack1 = new Stack<>();
 
 
-        for (int i = 0; i < n; i++) {
-            str = br.readLine();
-            Stack<Character> stack = new Stack<>();
 
-            for (int j = 0; j < str.length(); j++) {
-                Character ch = str.charAt(j);
-
-                if (ch == '(') {
-                    stack.push(ch);
-                } else if (ch == ')') {
-                    if (!stack.isEmpty()) {
-                        stack.pop();
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) == '(') {
+                    stack1.push('(');
+                } else if (str.charAt(i) == ')') {
+                    if (stack1.isEmpty()) {
+                        stack1.push('#');
+                        break;
+                    } else if (stack1.peek() == '(') {
+                        stack1.pop();
                     } else {
-                        stack.push('#');
+                        stack1.push('#');
+                        break;
+                    }
+
+                } else if (str.charAt(i) == '[') {
+                    stack1.push('[');
+                } else if (str.charAt(i) == ']') {
+                    if (stack1.isEmpty()) {
+                        stack1.push('#');
+                        break;
+                    } else if (stack1.peek() == '[') {
+                        stack1.pop();
+                    } else {
+                        stack1.push('#');
                         break;
                     }
 
                 }
             }
 
-            if (stack.isEmpty()) {
-                bw.write("YES\n");
+            if (stack1.empty()) {
+                bw.write("yes\n");
             } else {
-                bw.write("NO\n");
+                bw.write("no\n");
             }
-
-            bw.flush();
-
-
         }
+
+
+        bw.flush();
+
 
 
 
     }
+
+
 
 }
 
