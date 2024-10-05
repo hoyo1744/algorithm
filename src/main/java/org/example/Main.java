@@ -1,9 +1,10 @@
 package org.example;
 
 
-import java.io.*;
+
 import java.util.*;
 import java.util.stream.*;
+import java.io.*;
 
 
 class Main {
@@ -14,86 +15,69 @@ class Main {
 
     public static int n;
 
-    public static Queue<Integer> q = new LinkedList<>();
 
-    public static Stack<Integer> s = new Stack<>();
-
-
-    public static void main(String[] args) throws IOException {
-
-        String str = br.readLine();
-
-        n = Integer.parseInt(str);
+    public static Deque<Integer> dq = new ArrayDeque<>();
 
 
-        str = br.readLine();
+    public static void main(String[] args) throws IOException{
 
-        StringTokenizer st = new StringTokenizer(str);
+
+        n = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < n; i++) {
-            int value = Integer.parseInt(st.nextToken());
-            q.add(value);
-        }
 
-        int start = 1;
+            String cmd = br.readLine();
 
-        while (true) {
+            StringTokenizer st = new StringTokenizer(cmd);
 
-            if (start == n) {
-                break;
-            }
-
-            if (!s.isEmpty()) {
-                int stackValue = s.peek();
-                if (stackValue == start) {
-                    s.pop();
-                    start++;
-                    continue;
+            String msg = st.nextToken();
+            if (msg.equals("push")) {
+                int value = Integer.parseInt(st.nextToken());
+                dq.addLast(value);
+            } else if (msg.equals("front")) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
                 } else {
-                    if (q.isEmpty()) {
-                        start = -1;
-                        break;
-                    }
+                    bw.write(String.valueOf(dq.getFirst()));
+                    bw.write("\n");
                 }
-            }
-
-            if (!q.isEmpty()) {
-                int qValue = q.peek();
-                if (qValue == start) {
-                    q.remove();
-                    start++;
-                    continue;
+            } else if (msg.equals("back")) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
                 } else {
-                    if (q.isEmpty()) {
-                        start = -1;
-                        break;
-                    }
-                    Integer remove = q.remove();
-                    s.add(remove);
+                    bw.write(String.valueOf(dq.getLast()));
+                    bw.write("\n");
                 }
+            } else if (msg.equals("size")) {
+                bw.write(String.valueOf(dq.size()));
+                bw.write("\n");
+            } else if (msg.equals("empty")) {
+                if (dq.isEmpty()) {
+                    bw.write("1\n");
+                } else {
+                    bw.write("0\n");
+                }
+            } else if (msg.equals("pop")) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
+                } else {
+                    bw.write(String.valueOf(dq.pop()));
+                    bw.write("\n");
+                }
+
             }
 
 
-
         }
 
-        if (start == n) {
-            bw.write("Nice\n");
-        } else {
-            bw.write("Sad");
-        }
 
         bw.flush();
 
 
 
-
-
-
-
-
-
     }
+
+
 
 
 }
