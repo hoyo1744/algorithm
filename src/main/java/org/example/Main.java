@@ -1,7 +1,5 @@
 package org.example;
 
-
-
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
@@ -13,69 +11,40 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int n;
-
-
-    public static Deque<Integer> dq = new ArrayDeque<>();
-
+    public static Queue<Integer> q = new LinkedList<>();
 
     public static void main(String[] args) throws IOException{
 
+        int n = Integer.parseInt(br.readLine());
 
-        n = Integer.parseInt(br.readLine());
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
+            q.add(i);
+        }
 
-            String cmd = br.readLine();
 
-            StringTokenizer st = new StringTokenizer(cmd);
-
-            String msg = st.nextToken();
-            if (msg.equals("push")) {
-                int value = Integer.parseInt(st.nextToken());
-                dq.addLast(value);
-            } else if (msg.equals("front")) {
-                if (dq.isEmpty()) {
-                    bw.write("-1\n");
-                } else {
-                    bw.write(String.valueOf(dq.getFirst()));
-                    bw.write("\n");
-                }
-            } else if (msg.equals("back")) {
-                if (dq.isEmpty()) {
-                    bw.write("-1\n");
-                } else {
-                    bw.write(String.valueOf(dq.getLast()));
-                    bw.write("\n");
-                }
-            } else if (msg.equals("size")) {
-                bw.write(String.valueOf(dq.size()));
-                bw.write("\n");
-            } else if (msg.equals("empty")) {
-                if (dq.isEmpty()) {
-                    bw.write("1\n");
-                } else {
-                    bw.write("0\n");
-                }
-            } else if (msg.equals("pop")) {
-                if (dq.isEmpty()) {
-                    bw.write("-1\n");
-                } else {
-                    bw.write(String.valueOf(dq.pop()));
-                    bw.write("\n");
-                }
-
+        int idx = 1;
+        while (true) {
+            if (q.size() == 1) {
+                break;
             }
 
+
+            if (idx % 2 == 1) {
+                q.remove();
+            } else {
+                int num = q.remove();
+                q.add(num);
+            }
+            idx++;
 
         }
 
 
+        bw.write(String.valueOf(q.peek()));
         bw.flush();
-
-
-
     }
+
 
 
 
