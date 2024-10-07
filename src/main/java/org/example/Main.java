@@ -1,9 +1,9 @@
 package org.example;
 
-import java.util.*;
-import java.util.stream.*;
-import java.io.*;
 
+import java.util.*;
+import java.io.*;
+import java.util.stream.*;
 
 class Main {
 
@@ -11,43 +11,63 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static Queue<Integer> q = new LinkedList<>();
+    public static int n;
+
+    public static int m;
+
+    public static Deque<Integer> dq = new ArrayDeque<>();
+
+    public static List<Integer> list = new ArrayList<>();
+
+
+
+
 
     public static void main(String[] args) throws IOException{
 
-        int n = Integer.parseInt(br.readLine());
+        String str = br.readLine();
+
+        StringTokenizer st = new StringTokenizer(str);
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
 
         for (int i = 1; i <= n; i++) {
-            q.add(i);
+            dq.addLast(i);
         }
 
 
-        int idx = 1;
         while (true) {
-            if (q.size() == 1) {
+            if (dq.size() == 1) {
+                list.add(dq.remove());
                 break;
             }
 
-
-            if (idx % 2 == 1) {
-                q.remove();
-            } else {
-                int num = q.remove();
-                q.add(num);
+            for (int i = 1; i < m; i++) {
+                int value = dq.remove();
+                dq.addLast(value);
             }
-            idx++;
 
+
+            int value = dq.remove();
+            list.add(value);
         }
 
 
-        bw.write(String.valueOf(q.peek()));
+        bw.write("<");
+        for (int i = 0; i < list.size(); i++) {
+            bw.write(String.valueOf(list.get(i)));
+
+            if (list.size() - 1 != i) {
+
+                bw.write(", ");
+            }
+        }
+
+        bw.write(">");
         bw.flush();
+
     }
-
-
-
-
 
 }
 
