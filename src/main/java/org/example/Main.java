@@ -1,9 +1,11 @@
 package org.example;
 
 
+
 import java.util.*;
-import java.io.*;
 import java.util.stream.*;
+import java.io.*;
+
 
 class Main {
 
@@ -11,63 +13,77 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int n;
-
-    public static int m;
-
     public static Deque<Integer> dq = new ArrayDeque<>();
-
-    public static List<Integer> list = new ArrayList<>();
-
-
-
 
 
     public static void main(String[] args) throws IOException{
 
-        String str = br.readLine();
 
-        StringTokenizer st = new StringTokenizer(str);
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(br.readLine());
 
 
-        for (int i = 1; i <= n; i++) {
-            dq.addLast(i);
-        }
+        for (int i = 0; i < n; i++) {
+            String cmd = br.readLine();
 
+            StringTokenizer st = new StringTokenizer(cmd);
+            int num = Integer.parseInt(st.nextToken());
 
-        while (true) {
-            if (dq.size() == 1) {
-                list.add(dq.remove());
-                break;
-            }
-
-            for (int i = 1; i < m; i++) {
-                int value = dq.remove();
+            if (num == 1) {
+                int value = Integer.parseInt(st.nextToken());
+                dq.addFirst(value);
+            } else if (num == 2) {
+                int value = Integer.parseInt(st.nextToken());
                 dq.addLast(value);
+            } else if (num == 3) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
+                } else {
+                    bw.write(String.valueOf(dq.removeFirst()));
+                    bw.write("\n");
+                }
+            } else if (num == 4) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
+                } else {
+                    bw.write(String.valueOf(dq.removeLast()));
+                    bw.write("\n");
+                }
+            } else if (num == 5) {
+                bw.write(String.valueOf(dq.size()));
+                bw.write("\n");
+            } else if (num == 6) {
+                if (dq.isEmpty()) {
+                    bw.write("1\n");
+                } else {
+                    bw.write("0\n");
+                }
+            } else if (num == 7) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
+                } else {
+                    bw.write(String.valueOf(dq.peekFirst()));
+                    bw.write("\n");
+                }
+            } else if (num == 8) {
+                if (dq.isEmpty()) {
+                    bw.write("-1\n");
+                } else {
+                    bw.write(String.valueOf(dq.peekLast()));
+                    bw.write("\n");
+                }
             }
 
 
-            int value = dq.remove();
-            list.add(value);
+
         }
 
 
-        bw.write("<");
-        for (int i = 0; i < list.size(); i++) {
-            bw.write(String.valueOf(list.get(i)));
-
-            if (list.size() - 1 != i) {
-
-                bw.write(", ");
-            }
-        }
-
-        bw.write(">");
+//        System.out.println("-----------");
         bw.flush();
 
     }
+
+
 
 }
 
