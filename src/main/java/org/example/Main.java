@@ -5,76 +5,52 @@ import java.util.*;
 import java.util.stream.*;
 import java.io.*;
 
-
 class Main {
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static Deque<Pair> dq = new ArrayDeque<>();
-
     public static int n;
 
-    public static class Pair{
-        public int index;
-        public int value;
+    public static int m;
 
-        Pair(int index, int value) {
-            this.index = index;
-            this.value = value;
-        }
+    public static Deque<Integer> dq = new ArrayDeque<>();
 
-
-    }
-
-
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         n = Integer.parseInt(br.readLine());
 
-        String str = br.readLine();
+        String isStack = br.readLine();
+        String datas = br.readLine();
 
-        StringTokenizer st = new StringTokenizer(str);
+        StringTokenizer st1 = new StringTokenizer(isStack);
+        StringTokenizer st2 = new StringTokenizer(datas);
 
         for (int i = 0; i < n; i++) {
-            dq.addLast(new Pair(i + 1, Integer.parseInt(st.nextToken())));
+            int stack = Integer.parseInt(st1.nextToken());
+            int data = Integer.parseInt(st2.nextToken());
+
+            if (stack == 0) {
+                dq.addLast(data);
+            }
         }
 
-        Pair value = dq.removeFirst();
-        bw.write(String.valueOf(value.index) + " ");
+        m = Integer.parseInt(br.readLine());
 
+        String str = br.readLine();
+        StringTokenizer st3 = new StringTokenizer(str);
 
-        while (true) {
-
-            if (dq.isEmpty()) {
-                break;
-            }
-
-            if (value.value > 0) {
-                for (int i = 1; i < value.value; i++) {
-                    dq.addLast(dq.removeFirst());
-                }
-            } else {
-                for (int i = 1; i < value.value * -1; i++) {
-                    dq.addFirst(dq.removeLast());
-                }
-            }
-
-            if (value.value > 0) {
-                value = dq.removeFirst();
-            } else {
-                value = dq.removeLast();
-            }
-
-
-            bw.write(String.valueOf(value.index) + " ");
+        for (int i = 0; i < m; i++) {
+            dq.addFirst(Integer.parseInt(st3.nextToken()));
+            bw.write(String.valueOf(dq.removeLast()) + " ");
         }
+
 
         bw.flush();
 
 
-
     }
+
 }
 
