@@ -11,22 +11,25 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void main(String[] args) throws IOException{
-        int n =Integer.parseInt(br.readLine());
 
-        int count = 0;
+    public static void main(String[] args) throws IOException {
 
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (i != j) {
-                    count++;
-                }
-            }
+        int n = Integer.parseInt(br.readLine());
+
+        if (n == 1) {
+            bw.write(String.valueOf(2));
+        } else if (n == 2) {
+            bw.write(String.valueOf(4));
+
+        } else if (n == 3) {
+            bw.write(String.valueOf(8));
+        } else if (n == 4) {
+            bw.write(String.valueOf(16));
+        } else {
+            bw.write(String.valueOf(32));
         }
 
-        bw.write(String.valueOf(count));
         bw.flush();
-
 
 
     }
