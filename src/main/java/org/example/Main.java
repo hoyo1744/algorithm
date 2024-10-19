@@ -12,28 +12,43 @@ class Main {
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 
+    public static int[][] dp = new int[10][10];
+
+
     public static void main(String[] args) throws IOException {
+
+
+        for (int i = 0; i < 10; i++) {
+            Arrays.fill(dp[i], 0);
+        }
 
         int n = Integer.parseInt(br.readLine());
 
-        if (n == 1) {
-            bw.write(String.valueOf(2));
-        } else if (n == 2) {
-            bw.write(String.valueOf(4));
+        dp[1][1] = 1;
 
-        } else if (n == 3) {
-            bw.write(String.valueOf(8));
-        } else if (n == 4) {
-            bw.write(String.valueOf(16));
-        } else {
-            bw.write(String.valueOf(32));
+        for (int i = 2; i <= n+1; i++) {
+            for (int j = 1; j <= n+1; j++) {
+                if (j == 1 || j == n+1) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                }
+            }
         }
+
+
+        int result = 0;
+
+        for (int i = 1; i <= n + 1; i++) {
+            result += dp[n+1][i];
+        }
+
+
+        bw.write(String.valueOf(result));
 
         bw.flush();
 
 
     }
-
-
 }
 
