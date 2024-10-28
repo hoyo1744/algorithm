@@ -2,36 +2,73 @@ package org.example;
 
 
 import java.util.*;
-import java.util.stream.*;
 import java.io.*;
+import java.util.stream.*;
+
 
 class Main {
 
-
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int[] dp = new int[20];
+    public static int n;
 
-    public static void main(String[] args) throws IOException{
+    public static int k;
 
-        Arrays.fill(dp, 0 );
+    public static boolean[] check = new boolean[15];
 
-        int n = Integer.parseInt(br.readLine());
+    public static int result;
 
-        dp[0] = 1;
+    public static void input() throws IOException{
+        String str = br.readLine();
 
-        for (int i = 1; i <= n; i++) {
-            dp[i] = dp[i-1] * i;
+        StringTokenizer st = new StringTokenizer(str);
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        Arrays.fill(check, false);
+    }
+
+    public static void output() throws IOException {
+        bw.write(String.valueOf(result));
+        bw.flush();
+    }
+
+    public static void solve(int idx, int cnt) {
+        if (cnt == k) {
+            result++;
+            return;
         }
 
-        bw.write(String.valueOf(dp[n]));
-
-        bw.flush();
-
-
-
+        for (int i = idx + 1; i <= n; i++) {
+            if (check[i] == false) {
+                check[i] = true;
+                solve(i, cnt+ 1);
+                check[i] = false;
+            }
+        }
     }
+
+    public static void main(String[] args) throws IOException {
+
+        input();
+        for (int i = 1; i <= n; i++) {
+            check[i] = true;
+            solve(i, 1);
+            check[i] = false;
+        }
+
+        if (k == 0) {
+            result = 1;
+        }
+
+
+        output();
+    }
+
+
 
 }
 
