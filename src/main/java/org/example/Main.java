@@ -1,7 +1,6 @@
 package org.example;
 
 
-import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
@@ -12,18 +11,24 @@ class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    public static int[] dp = new int[22];
+
     public static void main(String[] args) throws IOException{
 
         int n = Integer.parseInt(br.readLine());
 
-        BigInteger value = BigInteger.ONE;
+        dp[0] = 0;
+        dp[1] = 1;
 
-        for (int i = 1; i <= n; i++) {
-            value = value.multiply(BigInteger.valueOf(i));
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i-1] + dp[i-2];
         }
 
-        bw.write(value.toString());
+        bw.write(String.valueOf(dp[n]));
         bw.flush();
+
+
+
 
 
     }
