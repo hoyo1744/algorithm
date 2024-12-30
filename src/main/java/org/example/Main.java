@@ -4,101 +4,99 @@ import java.util.*;
 import java.util.stream.*;
 import java.io.*;
 
+
+/***
+ * 스타트와 링크
+ */
 class Main {
-
-    public static int n;
-
-    public static int maxResult = Integer.MIN_VALUE;
-
-    public static int minResult = Integer.MAX_VALUE;
-
-    public static final int ADD = 1;
-
-    public static final int MINUS = 2;
-
-    public static final int MULTI = 3;
-
-    public static final int DEVIDE = 4;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int[] arr = new int[15];
+    public static int result = Integer.MAX_VALUE;
 
-    public static int[] oper = new int[5];
+    public static int[][] arr = new int[25][25];
 
-    public static void input() throws IOException {
+    public static int n;
 
-        n = Integer.parseInt(br.readLine());
+    public static boolean[] team = new boolean[25];
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            arr[i + 1] = Integer.parseInt(st.nextToken());
-        }
-
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < 4; i++) {
-            oper[i + 1] = Integer.parseInt(st.nextToken());
-        }
-    }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(maxResult));
-        bw.write("\n");
-        bw.write(String.valueOf(minResult));
+        bw.write(String.valueOf(result));
         bw.flush();
     }
 
-    public static void solve(int idx, int value) {
+    public static void input() throws IOException {
+        n = Integer.parseInt(br.readLine());
 
-        if (idx == n + 1) {
-
-            if (value < minResult) {
-                minResult = value;
+        for (int i = 1; i <= n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 1; j <= n; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
-
-            if (value > maxResult) {
-                maxResult = value;
-            }
-
+        }
+    }
+    public static void solve(int idx, int cnt) {
+        if (cnt == n / 2) {
+            result = Integer.min(result, calculate());
             return;
         }
 
-        if (oper[ADD] > 0) {
-            oper[ADD] -= 1;
-            solve(idx + 1, value + arr[idx]);
-            oper[ADD] += 1;
+        for (int i = idx; i <= n; i++) {
+            team[i] = true;
+            solve(i + 1, cnt + 1);
+            team[i] = false;
         }
-        if (oper[MINUS] > 0) {
-            oper[MINUS] -= 1;
-            solve(idx + 1, value - arr[idx]);
-            oper[MINUS] += 1;
-        }
-        if (oper[MULTI] > 0) {
-            oper[MULTI] -= 1;
-            solve(idx + 1, value * arr[idx]);
-            oper[MULTI] += 1;
-        }
-        if (oper[DEVIDE] > 0) {
-            oper[DEVIDE] -= 1;
-            solve(idx + 1, value / arr[idx]);
-            oper[DEVIDE] += 1;
+    }
 
+    public static int calculate() {
+
+        List<Integer> startTeam = new ArrayList<>();
+        List<Integer> linkTeam = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            if (team[i]) {
+                startTeam.add(i);
+            } else {
+                linkTeam.add(i);
+            }
         }
+
+        int startTeamSum = 0;
+        int linkTeamSum = 0;
+        for (int i = 0; i < startTeam.size(); i++) {
+            for (int j = 0; j < startTeam.size(); j++) {
+                if (i == j) {
+                    continue;
+                }
+                startTeamSum += arr[startTeam.get(i)][startTeam.get(j)];
+            }
+        }
+
+        for (int i = 0; i < linkTeam.size(); i++) {
+            for (int j = 0; j < linkTeam.size(); j++) {
+                if (i == j) {
+                    continue;
+                }
+                linkTeamSum += arr[linkTeam.get(i)][linkTeam.get(j)];
+            }
+        }
+
+
+
+        return Math.abs(startTeamSum - linkTeamSum);
 
     }
 
 
     public static void main(String[] args) throws IOException {
-
         input();
-        solve(2, arr[1]);
+
+        solve(1, 0);
         output();
-
-
     }
-
 
 }
 
