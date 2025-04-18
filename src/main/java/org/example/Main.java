@@ -1,71 +1,118 @@
 package org.example;
 
 
+
 import java.util.*;
-import java.io.*;
 import java.util.stream.*;
+
+import java.io.*;
+
 public class Main {
+
+    public static int n;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int n;
+    public static ArrayList<Person> list = new ArrayList<>();
 
-    public static ArrayList<Atm> list = new ArrayList<>();
+    public static HashMap<Integer, Integer> map = new HashMap<>();
 
-    public static int result;
 
-    static class Atm implements Comparable<Atm>{
+
+    static class Person implements Comparable<Person>{
+        public int weight;
+
+        public int height;
+
         public int num;
 
-        public int p;
-
-        public Atm(int num, int p) {
+        public Person(int w, int h, int num) {
+            this.weight = w;
+            this.height = h;
             this.num = num;
-            this.p = p;
         }
 
-        // 오름차순
         @Override
-        public int compareTo(Atm atm){
-           return this.p - atm.p;
+        public int compareTo(Person p) {
+            if (this.weight > p.weight && this.height > p.height) {
+                return 1;
+            } else if (this.weight == p.weight && this.height == p.height) {
+                return 0;
+            } else {
+                return -1;
+            }
         }
+
+
     }
 
+
     public static void input() throws IOException {
+
         n = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int w = Integer.parseInt(st.nextToken());
+            int h = Integer.parseInt(st.nextToken());
+            int num = i + 1;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= n; i++) {
-            int v = Integer.parseInt(st.nextToken());
+            list.add(new Person(w, h, num));
 
-            list.add(new Atm(i, v));
         }
     }
 
     public static void solve() {
-        list.sort(Comparator.naturalOrder());
 
-        int sum = 0;
-        for(int i = 0; i < list.size(); i++){
-            result += sum + list.get(i).p;
-            sum += list.get(i).p;
+//        list.sort(Comparator.reverseOrder());
+
+        for (int i = 0; i < n; i++) {
+            int downCount = 0; // 나보다 큰 애들 개수
+            for (int j = 0; j < n; j++) {
+                if( i == j )
+                    continue;
+                int temp = validation(list.get(i), list.get(j));
+               if (temp == -1) {
+                   downCount++;
+               }
+            }
+
+            map.put(list.get(i).num, downCount + 1);
+
         }
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(result));
+        for (int i = 1; i <= n; i++) {
+            bw.write(String.valueOf(map.get(i)) + " ");
+        }
         bw.flush();
     }
 
-
     public static void main(String[] args) throws IOException {
-
         input();
         solve();
         output();
     }
+
+    public static int validation(Person p1, Person p2) {
+        if (p1.weight > p2.weight && p1.height > p2.height) {
+            return 1;
+        } else if (p1.weight == p2.weight && p1.height == p2.height) {
+            return 0;
+        } else if (p1.weight < p2.weight && p1.height < p2.height) {
+            return -1;
+        } else {
+            return -100;
+        }
+
+
+    }
+
+
+
+
 
 
 }
