@@ -7,44 +7,64 @@ import java.io.*;
 
 public class Main {
 
+
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    public static ArrayList<Integer> result = new ArrayList<>();
 
-    public static Map<Character, Integer> map = new HashMap<>();
+    public static ArrayList<Integer> result2 = new ArrayList<>();
+
+    public static ArrayList<Integer> dwarfs = new ArrayList<>();
+
+    public static boolean isEnd = false;
 
 
 
     public static void main(String[] args) throws IOException {
+        input();
+        solve(-1, 0 , 0);
+        output();
+    }
 
-        String str = br.readLine();
+    public static void input() throws IOException {
+        for (int i = 0; i < 9; i++) {
+            dwarfs.add(Integer.parseInt(br.readLine()));
+        }
+    }
 
-        for (int i = 0; i < str.length(); i++) {
-            if (map.get(str.charAt(i)) == null) {
-                map.put(str.charAt(i), 1);
-            } else {
-                int count = map.get(str.charAt(i));
-                map.put(str.charAt(i), count+1);
-            }
+    public static void solve(int idx, int count, int sum) {
+
+        if (isEnd) {
+            return;
         }
 
-
-        for (int i = 'a'; i <= 'z'; i++) {
-            if (map.get((char)i) == null) {
-                bw.write("0" + " ");
-            } else {
-                bw.write(String.valueOf(map.get((char)i)) + " ");
-            }
-
+        if (count == 7 && sum == 100 ){
+            isEnd = true;
+            return;
         }
 
+        for (int i = idx + 1; i < dwarfs.size(); i++) {
+            result.add(dwarfs.get(i));
+            solve(i, count + 1, sum + dwarfs.get(i));
+            if (isEnd) {
+                break;
+            }
+            result.remove(result.size() - 1);
+        }
+    }
 
+    public static void output() throws IOException {
+        result.sort(Comparator.naturalOrder());
 
-
+        for (int i = 0; i < result.size(); i++) {
+            bw.write(String.valueOf(result.get(i))+ "\n");
+        }
 
         bw.flush();
     }
+
 
 
 }
