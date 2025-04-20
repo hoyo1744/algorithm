@@ -1,10 +1,8 @@
 package org.example;
 
-
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
-
 
 
 public class Main {
@@ -13,60 +11,47 @@ public class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int result;
 
 
 
     public static void main(String[] args) throws IOException {
 
-        String str = br.readLine();
+        while(true){
+            int num = Integer.parseInt(br.readLine());
 
-        boolean isMinus = false;
-        boolean isFirstMinus = false;
-        String number = "";
-
-        int left = 0;
-        int right = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '-') {
-                if (isFirstMinus == false) {
-                    isFirstMinus = true;
-                    left += Integer.parseInt(number);
-                    number = "";
-                } else {
-                    right += Integer.parseInt(number);
-                    number = "";
-                }
-            } else if (str.charAt(i) == '+') {
-
-                if (isFirstMinus == false) {
-                    left += Integer.parseInt(number);
-                    number = "";
-                } else{
-                    right += Integer.parseInt(number);
-                    number = "";
-                }
-            } else {
-                // 일반 숫자.
-                number = number + str.charAt(i);
+            if (num == 0) {
+                break;
             }
-        }
 
-        if (number.length() > 0) {
-            right += Integer.parseInt(number);
+            solve(num);
         }
-
-        if (isFirstMinus) {
-            result = left - right;
-        } else {
-            result = left + right;
-        }
-
-        bw.write(String.valueOf(result));
-        bw.write("\n");
-        bw.flush();
 
     }
 
+    public static void solve(int num) throws IOException {
+        String str = String.valueOf(num);
 
+        int left = 0;
+        int right = str.length() - 1;
+
+        boolean isPalindrome = true;
+
+        while (left < right) {
+            if (str.charAt(left) == str.charAt(right)) {
+                left++;
+                right--;
+            } else {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        if (isPalindrome) {
+            bw.write("yes\n");
+        } else {
+            bw.write("no\n");
+        }
+
+        bw.flush();
+    }
 }
