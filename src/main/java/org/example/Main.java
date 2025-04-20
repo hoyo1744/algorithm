@@ -5,44 +5,68 @@ import java.util.*;
 import java.util.stream.*;
 import java.io.*;
 
+
+
 public class Main {
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int t;
-
     public static int result;
+
+
 
     public static void main(String[] args) throws IOException {
 
-        t = Integer.parseInt(br.readLine());
+        String str = br.readLine();
 
-        for (int j = 0; j < t; j++) {
-            String str = br.readLine();
-            result = 0;
+        boolean isMinus = false;
+        boolean isFirstMinus = false;
+        String number = "";
 
-            int continueCount = 0;
-            for(int i = 0; i < str.length(); i++){
-                if (str.charAt(i) == 'O') {
-                    continueCount++;
-                    result += continueCount;
+        int left = 0;
+        int right = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '-') {
+                if (isFirstMinus == false) {
+                    isFirstMinus = true;
+                    left += Integer.parseInt(number);
+                    number = "";
                 } else {
-                    continueCount = 0;
+                    right += Integer.parseInt(number);
+                    number = "";
                 }
+            } else if (str.charAt(i) == '+') {
+
+                if (isFirstMinus == false) {
+                    left += Integer.parseInt(number);
+                    number = "";
+                } else{
+                    right += Integer.parseInt(number);
+                    number = "";
+                }
+            } else {
+                // 일반 숫자.
+                number = number + str.charAt(i);
             }
-
-
-
-            bw.write(String.valueOf(result));
-            bw.write("\n");
-            bw.flush();
-
         }
 
+        if (number.length() > 0) {
+            right += Integer.parseInt(number);
+        }
 
+        if (isFirstMinus) {
+            result = left - right;
+        } else {
+            result = left + right;
+        }
+
+        bw.write(String.valueOf(result));
+        bw.write("\n");
+        bw.flush();
 
     }
+
 
 }
