@@ -7,64 +7,72 @@ import java.io.*;
 
 public class Main {
 
-
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static ArrayList<Integer> result = new ArrayList<>();
+    public static int n;
 
-    public static ArrayList<Integer> result2 = new ArrayList<>();
+    public static int result;
 
-    public static ArrayList<Integer> dwarfs = new ArrayList<>();
+    public static ArrayList<Pair> list = new ArrayList<>();
 
-    public static boolean isEnd = false;
+    static class Pair {
+        public int t;
+        public int p;
+
+        public Pair(int t, int p){
+            this.t = t;
+            this.p = p;
+        }
+    }
+
 
 
 
     public static void main(String[] args) throws IOException {
+
         input();
-        solve(-1, 0 , 0);
+        solve(1,0, 0 );
         output();
+
     }
 
     public static void input() throws IOException {
-        for (int i = 0; i < 9; i++) {
-            dwarfs.add(Integer.parseInt(br.readLine()));
+        n = Integer.parseInt(br.readLine());
+
+        list.add(new Pair(0,0));
+
+        for (int i = 1; i <= n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int t = Integer.parseInt(st.nextToken());
+            int p = Integer.parseInt(st.nextToken());
+
+            list.add(new Pair(t, p));
         }
     }
 
-    public static void solve(int idx, int count, int sum) {
-
-        if (isEnd) {
+    public static void solve(int day, int selectDay, int price) {
+        if (day == n + 1) {
+            result = Math.max(price, result);
             return;
         }
 
-        if (count == 7 && sum == 100 ){
-            isEnd = true;
-            return;
-        }
-
-        for (int i = idx + 1; i < dwarfs.size(); i++) {
-            result.add(dwarfs.get(i));
-            solve(i, count + 1, sum + dwarfs.get(i));
-            if (isEnd) {
-                break;
-            }
-            result.remove(result.size() - 1);
+        if (selectDay + list.get(selectDay).t - 1 < day  && day + list.get(day).t -1 <= n) {
+            // 현재를 선택할수 있는 경우
+            solve(day + 1, day, price + list.get(day).p);
+            solve(day + 1, selectDay, price);
+        } else {
+            // 현재를 선택할 수 없는 경우
+            solve(day +1, selectDay, price);
         }
     }
+
 
     public static void output() throws IOException {
-        result.sort(Comparator.naturalOrder());
-
-        for (int i = 0; i < result.size(); i++) {
-            bw.write(String.valueOf(result.get(i))+ "\n");
-        }
-
+        bw.write(String.valueOf(result));
         bw.flush();
     }
-
 
 
 }
