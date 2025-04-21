@@ -13,58 +13,57 @@ public class Main {
 
     public static int n;
 
+    public static int m;
+
+    public static int[][] arr = new int[10][10];
+
+    public static ArrayList<Point> walls = new ArrayList<>();
+
+    public static ArrayList<Point> virus = new ArrayList<>();
+
     public static int result;
 
-    public static ArrayList<Pair> list = new ArrayList<>();
+    public static int[] dx = {1,0, -1, 0};
 
-    static class Pair {
-        public int t;
-        public int p;
+    public static int[] dy = {0,1,0,-1};
 
-        public Pair(int t, int p){
-            this.t = t;
-            this.p = p;
+    public static boolean[][] check = new boolean[10][10];
+
+    static class Point {
+        public int x;
+        public int y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
-
-
-
 
     public static void main(String[] args) throws IOException {
 
         input();
-        solve(1,0, 0 );
+        solve();
         output();
-
     }
 
     public static void input() throws IOException {
-        n = Integer.parseInt(br.readLine());
 
-        list.add(new Pair(0,0));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
         for (int i = 1; i <= n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int t = Integer.parseInt(st.nextToken());
-            int p = Integer.parseInt(st.nextToken());
+            st = new StringTokenizer(br.readLine());
+            for (int j = 1; j <= m; j++) {
+                int v= Integer.parseInt(st.nextToken());
+                arr[i][j] = v;
 
-            list.add(new Pair(t, p));
-        }
-    }
-
-    public static void solve(int day, int selectDay, int price) {
-        if (day == n + 1) {
-            result = Math.max(price, result);
-            return;
-        }
-
-        if (selectDay + list.get(selectDay).t - 1 < day  && day + list.get(day).t -1 <= n) {
-            // 현재를 선택할수 있는 경우
-            solve(day + 1, day, price + list.get(day).p);
-            solve(day + 1, selectDay, price);
-        } else {
-            // 현재를 선택할 수 없는 경우
-            solve(day +1, selectDay, price);
+                if (v == 0) {
+                    walls.add(new Point(i, j));
+                } else if (v == 2) {
+                    virus.add(new Point(i, j));
+                }
+            }
         }
     }
 
@@ -74,5 +73,71 @@ public class Main {
         bw.flush();
     }
 
+
+    public static void solve() {
+
+        // 3개의 벽 선택
+        for (int i = 0; i < walls.size(); i++) {
+            for (int j = i + 1; j < walls.size(); j++) {
+                for (int k = j + 1; k < walls.size(); k++) {
+
+                    bfs(i, j, k);
+                }
+            }
+        }
+    }
+
+    public static void bfs(int a, int b, int c) {
+
+
+        // 벽세우기
+        arr[walls.get(a).x][walls.get(a).y] = 1;
+        arr[walls.get(b).x][walls.get(b).y] = 1;
+        arr[walls.get(c).x][walls.get(c).y] = 1;
+
+        for (int i = 1; i <= 8; i++) {
+            Arrays.fill(check[i], false);
+        }
+        Queue<Point> q = new LinkedList<>();
+
+        for (int i = 0; i < virus.size(); i++) {
+            check[virus.get(i).x][virus.get(i).y] = true;
+            q.add(virus.get(i));
+        }
+
+        while (q.size() > 0) {
+            Point v = q.poll();
+
+
+            for (int i = 0; i < 4; i++) {
+                int nx = v.x + dx[i];
+                int ny = v.y + dy[i];
+
+                if (nx >= 1 && nx <= n && ny >= 1 && ny <= m) {
+                    if (check[nx][ny] == false && arr[nx][ny] == 0) {
+                        check[nx][ny]=true;
+                        q.add(new Point(nx,ny));
+                    }
+                }
+            }
+        }
+
+
+        int safe = 0;
+        // 안전지대 체크
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (arr[i][j] == 0 && check[i][j] == false) {
+                    safe++;
+                }
+            }
+        }
+
+        arr[walls.get(a).x][walls.get(a).y] = 0;
+        arr[walls.get(b).x][walls.get(b).y] = 0;
+        arr[walls.get(c).x][walls.get(c).y] = 0;
+
+        result = Math.max(safe, result);
+    }
 
 }
