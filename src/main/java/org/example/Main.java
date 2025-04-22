@@ -8,91 +8,47 @@ import java.io.*;
 
 public class Main {
 
-    public static char[][] arr = new char[101][101];
-
-    public static boolean[][] check = new boolean[101][101];
-
-    public static int n;
-
-    public static int m;
-
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int result;
+    public static int n;
 
-    public static int[] dx = {1, 0, -1, 0};
-    public static int[] dy = {0, 1, 0, -1};
+    public static int[] dp = new int[1000005];
 
-    static class Pair {
-        public int x;
-        public int y;
+    public static int solve(int num) {
 
-        public int d;
-
-        public  Pair(int x, int y, int d) {
-            this.x = x;
-            this.y = y;
-            this.d = d;
-
+        if (num == 1) {
+            return 0;
         }
-    }
 
+        int ret = dp[num];
+        if (ret != Integer.MAX_VALUE) {
+            return ret;
+        }
+
+
+        if (num % 3 == 0) {
+            ret = Math.min(ret, solve(num/3) + 1);
+        }
+        if (num % 2 == 0) {
+            ret = Math.min(ret, solve(num/2) + 1);
+        }
+
+        ret = Math.min(ret, solve( num - 1) + 1);
+
+        return dp[num] = ret;
+    }
 
     public static void main(String[] args) throws IOException {
-        input();
-        solve();
-        output();
-    }
-
-    public static void input() throws IOException {
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        for (int i = 1; i <= n; i++) {
-            String line = "0" + br.readLine();
-            arr[i] = line.toCharArray();
-        }
-
-    }
-
-    public static void solve() {
-        Queue<Pair> q = new LinkedList<>();
-
-        q.add(new Pair(1,1,1));
-        check[1][1] = true;
 
 
-        while (q.size() > 0) {
-            Pair p = q.poll();
+        n = Integer.parseInt(br.readLine());
 
-            if (p.x == n && p.y == m) {
-                result = p.d;
-                break;
-            }
+        Arrays.fill(dp, Integer.MAX_VALUE);
 
-            for (int i = 0; i < 4; i++) {
-                int nx = p.x + dx[i];
-                int ny = p.y + dy[i];
+        int result = solve(n);
 
-                if (nx >= 1 && nx <= n && ny >= 1 && ny <= m) {
-                    if (check[nx][ny] == false && arr[nx][ny] == '1') {
-                        check[nx][ny] = true;
-                        q.add(new Pair(nx, ny, p.d + 1));
-                    }
-
-                }
-
-            }
-
-
-
-        }
-    }
-
-    public static void output() throws IOException {
         bw.write(String.valueOf(result));
         bw.flush();
     }
