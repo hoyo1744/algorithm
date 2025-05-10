@@ -8,34 +8,34 @@ import java.io.*;
 public class Main {
 
 
+    public static int n;
+
+    public static int k;
+
+    public static int[] arr = new int[100_002];
+
+    public static int[] sum = new int[100_002];
+
+    public static int result = Integer.MIN_VALUE;
+
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-    public static int n;
-
-
-    public static int s;
-
-    public static int result = Integer.MAX_VALUE;
-
-    public static int[] arr = new int[100_000];
-
-    public static int[] sum = new int[100_000];
-
-
     public static void main(String[] args) throws IOException {
-
         input();
         solve();
         output();
     }
 
+    public static void output() throws IOException {
+        bw.write(String.valueOf(result));
+        bw.flush();
+    }
+
     public static void input() throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         n = Integer.parseInt(st.nextToken());
-        s = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
         st = new StringTokenizer(br.readLine());
 
@@ -48,39 +48,14 @@ public class Main {
         }
     }
 
-    public static void solve() {
+    public static void solve() throws IOException {
 
-        int start = 1;
-        int end =  1;
-
-        while (start <= end && end <= n) {
-            int current = sum[end] - sum[start - 1];
-            if (current >= s) {
-                result = Math.min(result, end - start + 1);
-                start++;
-                if (start > end && start <= n) {
-                    end = start;
-                }
-            } else if (current < s) {
-                end++;
-            }
-        }
-    }
-
-    public static void output() throws IOException {
-
-        if (result == Integer.MAX_VALUE) {
-            bw.write("0");
-        } else {
-            bw.write(String.valueOf(result));
+        // 누적합
+        for (int i = k; i <= n; i++) {
+            result = Math.max(result, sum[i] - sum[i-k]);
         }
 
-        bw.flush();
-
     }
-
-
-
 
 
 
