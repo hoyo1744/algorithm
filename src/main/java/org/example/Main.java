@@ -1,5 +1,6 @@
-package org.example;
 
+package org.example;
+// 두 수의 합
 
 import java.util.*;
 import java.util.stream.*;
@@ -7,24 +8,34 @@ import java.io.*;
 
 public class Main {
 
-
     public static int n;
 
-    public static int k;
-
-    public static int[] arr = new int[100_002];
-
-    public static int[] sum = new int[100_002];
-
-    public static int result = Integer.MIN_VALUE;
+    public static int x;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+    public static int result;
+
+    public static List<Integer> arr = new ArrayList<>();
+
+
     public static void main(String[] args) throws IOException {
         input();
         solve();
         output();
+    }
+
+    public static void input() throws IOException {
+        n = Integer.parseInt(br.readLine());
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr.add(Integer.parseInt(st.nextToken()));
+        }
+
+        x = Integer.parseInt(br.readLine());
     }
 
     public static void output() throws IOException {
@@ -32,32 +43,29 @@ public class Main {
         bw.flush();
     }
 
-    public static void input() throws IOException {
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
+    public static void solve() {
 
-        st = new StringTokenizer(br.readLine());
+        arr.sort(Comparator.naturalOrder());
 
-        for (int i = 1; i <= n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+        int left = 0;
+        int right = n - 1;
+
+        while (left < right && right >= 0 && left <= n - 1) {
+            int current = arr.get(left) + arr.get(right);
+
+            if (current == x) {
+                left++;
+                right--;
+                result++;
+            } else if (current < x) {
+                left++;
+            } else if (current > x) {
+                right--;
+            }
         }
 
-        for (int i = 1; i <= n; i++) {
-            sum[i] = sum[i-1] + arr[i];
-        }
+
     }
-
-    public static void solve() throws IOException {
-
-        // 누적합
-        for (int i = k; i <= n; i++) {
-            result = Math.max(result, sum[i] - sum[i-k]);
-        }
-
-    }
-
-
 
 
 }
