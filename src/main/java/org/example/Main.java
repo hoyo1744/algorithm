@@ -1,16 +1,16 @@
 
 package org.example;
-// 두 수의 합
+// 막대기
+
 
 import java.util.*;
 import java.util.stream.*;
 import java.io.*;
 
+
 public class Main {
 
     public static int n;
-
-    public static int x;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -18,8 +18,9 @@ public class Main {
 
     public static int result;
 
-    public static List<Integer> arr = new ArrayList<>();
+    public static List<Integer> list = new ArrayList<>();
 
+    public static int[] arr = new int[10];
 
     public static void main(String[] args) throws IOException {
         input();
@@ -29,13 +30,27 @@ public class Main {
 
     public static void input() throws IOException {
         n = Integer.parseInt(br.readLine());
+    }
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            arr.add(Integer.parseInt(st.nextToken()));
+    public static void solve() {
+        while (true) {
+
+            if (n == 1) {
+                result++;
+                break;
+            }
+
+            if (n == 0) {
+                break;
+            }
+
+            int mod = n % 2;
+            if (mod == 1) {
+                result++;
+            }
+
+            n = n / 2;
         }
-
-        x = Integer.parseInt(br.readLine());
     }
 
     public static void output() throws IOException {
@@ -43,29 +58,6 @@ public class Main {
         bw.flush();
     }
 
-    public static void solve() {
-
-        arr.sort(Comparator.naturalOrder());
-
-        int left = 0;
-        int right = n - 1;
-
-        while (left < right && right >= 0 && left <= n - 1) {
-            int current = arr.get(left) + arr.get(right);
-
-            if (current == x) {
-                left++;
-                right--;
-                result++;
-            } else if (current < x) {
-                left++;
-            } else if (current > x) {
-                right--;
-            }
-        }
-
-
-    }
 
 
 }
