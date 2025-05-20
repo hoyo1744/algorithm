@@ -1,110 +1,90 @@
 
 package org.example;
-// 2차원 배열의합
+// 두 용액
 
 import java.util.*;
-
 import java.util.stream.*;
 import java.io.*;
 
-
 public class Main {
 
-    static class Pair {
-        public int sx;
-        public int sy;
+    public static int resultLeft;
 
-        public int ex;
+    public static int resultRight;
 
-        public int ey;
-
-        public Pair(int sx, int sy, int ex, int ey) {
-            this.sx = sx;
-            this.sy = sy;
-            this.ex = ex;
-            this.ey = ey;
-        }
-    }
+    public static int result = Integer.MAX_VALUE;
 
     public static int n;
 
-    public static int m;
-
-    public static int k;
-
-    public static int[][] arr = new int[305][305];
-
-    public static int[][] sum = new int[305][305];
+    public static ArrayList<Integer> arr = new ArrayList<>();
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static List<Pair> list = new ArrayList<>();
-
-    public static List<Integer> result = new ArrayList<>();
-
     public static void input() throws IOException {
+        n = Integer.parseInt(br.readLine());
+
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        for (int i = 1; i <= n; i++) {
-            String str = br.readLine();
-            st = new StringTokenizer(str);
-
-            for (int j = 1; j <= m; j++) {
-                arr[i][j] = Integer.parseInt(st.nextToken());
-                sum[i][j] = sum[i-1][j] + sum[i][j-1] - sum[i-1][j-1] +arr[i][j];
-            }
+        for (int i = 0; i < n; i++) {
+            arr.add(Integer.parseInt(st.nextToken()));
         }
 
-        k = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < k; i++) {
-            st = new StringTokenizer(br.readLine());
-            list.add(new Pair(
-                    Integer.parseInt(st.nextToken()),
-                    Integer.parseInt(st.nextToken()),
-                    Integer.parseInt(st.nextToken()),
-                    Integer.parseInt(st.nextToken()))
-            );
-        }
+        arr.sort(Comparator.naturalOrder());
     }
 
     public static void output() throws IOException {
-
-        for (int i = 0; i < result.size(); i++) {
-            bw.write(String.valueOf(result.get(i)));
-            bw.write("\n");
-        }
+        bw.write(String.valueOf(resultLeft) + " " + String.valueOf(resultRight));
         bw.flush();
     }
 
     public static void solve() {
-        for (int i = 0; i < k; i++) {
-            Pair p = list.get(i);
 
-            int x1 = p.ex;
-            int y1 = p.sy - 1;
+        int left = 0;
+        int right = n - 1;
 
-            int x2 = p.sx - 1;
-            int y2 = p.ey;
+        while (left < right && right >= 0) {
 
-            result.add(sum[p.ex][p.ey] - sum[x1][y1] - sum[x2][y2] + sum[p.sx-1][p.sy-1]);
+            int value = arr.get(left) + arr.get(right);
+            if (value == 0) {
+                resultLeft = arr.get(left);
+                resultRight = arr.get(right);
+                break;
+            } else if (value > 0) {
+                if (Math.abs(result) > Math.abs(value)) {
+                    result = value;
+                    resultLeft = arr.get(left);
+                    resultRight = arr.get(right);
+                }
+                right--;
+            } else if (value < 0) {
+                if (Math.abs(result) > Math.abs(value)) {
+                    result = value;
+                    resultLeft = arr.get(left);
+                    resultRight = arr.get(right);
+                }
+                left++;
+            }
         }
+
+
+
 
     }
 
 
     public static void main(String[] args) throws IOException {
+
         input();
         solve();
         output();
+
+
+
+
+
     }
-
-
 
 
 
