@@ -1,6 +1,6 @@
 
 package org.example;
-// 배열 합치기
+// 두 용액
 
 import java.util.*;
 import java.util.stream.*;
@@ -8,44 +8,83 @@ import java.io.*;
 
 public class Main {
 
-    public static int a;
+    public static int resultLeft;
 
-    public static int b;
+    public static int resultRight;
+
+    public static int result = Integer.MAX_VALUE;
+
+    public static int n;
+
+    public static ArrayList<Integer> arr = new ArrayList<>();
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static List<Integer> list = new ArrayList<>();
-
-    public static void main(String[] args) throws IOException {
+    public static void input() throws IOException {
+        n = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        a = Integer.parseInt(st.nextToken());
-        b = Integer.parseInt(st.nextToken());
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= a; i++) {
-            list.add(Integer.parseInt(st.nextToken()));
+        for (int i = 0; i < n; i++) {
+            arr.add(Integer.parseInt(st.nextToken()));
         }
 
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= b; i++) {
-            list.add(Integer.parseInt(st.nextToken()));
-        }
+        arr.sort(Comparator.naturalOrder());
+    }
 
-
-        list.sort(Comparator.naturalOrder());
-
-        for (int i = 0; i < list.size(); i++) {
-            bw.write(String.valueOf(list.get(i)) + " ");
-        }
+    public static void output() throws IOException {
+        bw.write(String.valueOf(resultLeft) + " " + String.valueOf(resultRight));
         bw.flush();
+    }
+
+    public static void solve() {
+
+        int left = 0;
+        int right = n - 1;
+
+        while (left < right && right >= 0) {
+
+            int value = arr.get(left) + arr.get(right);
+            if (value == 0) {
+                resultLeft = arr.get(left);
+                resultRight = arr.get(right);
+                break;
+            } else if (value > 0) {
+                if (Math.abs(result) > Math.abs(value)) {
+                    result = value;
+                    resultLeft = arr.get(left);
+                    resultRight = arr.get(right);
+                }
+                right--;
+            } else if (value < 0) {
+                if (Math.abs(result) > Math.abs(value)) {
+                    result = value;
+                    resultLeft = arr.get(left);
+                    resultRight = arr.get(right);
+                }
+                left++;
+            }
+        }
+
+
 
 
     }
 
 
+    public static void main(String[] args) throws IOException {
+
+        input();
+        solve();
+        output();
+
+
+
+
+
+    }
 
 
 
