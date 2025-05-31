@@ -1,91 +1,64 @@
 
 package org.example;
-// 두 용액
 
-import java.util.*;
+// 1,2,3 더하기
+
 import java.util.stream.*;
+import java.util.*;
 import java.io.*;
 
+
 public class Main {
-
-    public static int resultLeft;
-
-    public static int resultRight;
-
-    public static int result = Integer.MAX_VALUE;
-
-    public static int n;
-
-    public static ArrayList<Integer> arr = new ArrayList<>();
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void input() throws IOException {
-        n = Integer.parseInt(br.readLine());
+    public static int t;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    public static int n;
 
-        for (int i = 0; i < n; i++) {
-            arr.add(Integer.parseInt(st.nextToken()));
+    public static int result;
+
+    public static void solve(int sum) {
+        if (sum == n) {
+            result++;
+            return;
         }
 
-        arr.sort(Comparator.naturalOrder());
+        if (sum + 1 <= n) {
+            solve(sum + 1);
+        }
+        if (sum + 2 <= n) {
+            solve(sum + 2);
+        }
+        if (sum + 3 <= n) {
+            solve(sum + 3);
+        }
+    }
+
+    public static void init() {
+        result = 0;
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(resultLeft) + " " + String.valueOf(resultRight));
+        bw.write(String.valueOf(result)+"\n");
         bw.flush();
-    }
-
-    public static void solve() {
-
-        int left = 0;
-        int right = n - 1;
-
-        while (left < right && right >= 0) {
-
-            int value = arr.get(left) + arr.get(right);
-            if (value == 0) {
-                resultLeft = arr.get(left);
-                resultRight = arr.get(right);
-                break;
-            } else if (value > 0) {
-                if (Math.abs(result) > Math.abs(value)) {
-                    result = value;
-                    resultLeft = arr.get(left);
-                    resultRight = arr.get(right);
-                }
-                right--;
-            } else if (value < 0) {
-                if (Math.abs(result) > Math.abs(value)) {
-                    result = value;
-                    resultLeft = arr.get(left);
-                    resultRight = arr.get(right);
-                }
-                left++;
-            }
-        }
-
-
-
 
     }
 
 
     public static void main(String[] args) throws IOException {
 
-        input();
-        solve();
-        output();
+        t = Integer.parseInt(br.readLine());
 
+        for (int i = 0; i < t; i++) {
+            init();
+            n = Integer.parseInt(br.readLine());
+            solve(0);
+            output();
 
-
-
-
+        }
     }
-
-
 
 }
