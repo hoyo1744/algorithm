@@ -1,7 +1,7 @@
 
 package org.example;
 
-// 1,2,3 더하기
+// 피보나치함수
 
 import java.util.stream.*;
 import java.util.*;
@@ -20,30 +20,27 @@ public class Main {
 
     public static int result;
 
-    public static void solve(int sum) {
-        if (sum == n) {
-            result++;
-            return;
-        }
-
-        if (sum + 1 <= n) {
-            solve(sum + 1);
-        }
-        if (sum + 2 <= n) {
-            solve(sum + 2);
-        }
-        if (sum + 3 <= n) {
-            solve(sum + 3);
-        }
-    }
+    public static int dp[][] = new int[45][2];
 
     public static void init() {
         result = 0;
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(result)+"\n");
+        bw.write(String.valueOf(dp[n][0]) + " " + String.valueOf(dp[n][1]) + "\n");
         bw.flush();
+    }
+
+    public static void solve() {
+
+
+        dp[0][0] = 1;
+        dp[1][1] = 1;
+
+        for (int i = 2; i <= 40; i++) {
+            dp[i][0] = dp[i-1][0] + dp[i-2][0];
+            dp[i][1] = dp[i-1][1] + dp[i-2][1];
+        }
 
     }
 
@@ -55,10 +52,11 @@ public class Main {
         for (int i = 0; i < t; i++) {
             init();
             n = Integer.parseInt(br.readLine());
-            solve(0);
+            solve();
             output();
-
         }
     }
+
+
 
 }
