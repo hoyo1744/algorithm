@@ -1,10 +1,10 @@
 
 package org.example;
 
-// 1,2,3 더하기
+// 2xN 타일링
 
-import java.util.stream.*;
 import java.util.*;
+import java.util.stream.*;
 import java.io.*;
 
 
@@ -14,51 +14,37 @@ public class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int t;
-
     public static int n;
 
     public static int result;
 
-    public static void solve(int sum) {
-        if (sum == n) {
-            result++;
-            return;
-        }
+    public static int[] dp = new int[1005];
 
-        if (sum + 1 <= n) {
-            solve(sum + 1);
-        }
-        if (sum + 2 <= n) {
-            solve(sum + 2);
-        }
-        if (sum + 3 <= n) {
-            solve(sum + 3);
-        }
-    }
-
-    public static void init() {
-        result = 0;
+    public static void input() throws IOException {
+        n = Integer.parseInt(br.readLine());
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(result)+"\n");
+        bw.write(String.valueOf(dp[n]));
         bw.flush();
+    }
 
+    public static void solve() {
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = (dp[i-1] + dp[i-2])%10_007;
+        }
     }
 
 
     public static void main(String[] args) throws IOException {
+        input();
+        solve();
+        output();
 
-        t = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < t; i++) {
-            init();
-            n = Integer.parseInt(br.readLine());
-            solve(0);
-            output();
-
-        }
     }
+
+
 
 }
