@@ -1,10 +1,11 @@
 
 package org.example;
 
-// 계단 오르기
-import java.util.*;
+// 나머지 합
+
 import java.util.stream.*;
 import java.io.*;
+import java.util.*;
 
 
 public class Main {
@@ -13,43 +14,56 @@ public class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int[][] dp = new int[305][3];
+    public static long[] arr = new long[1_000_005];
+
+    public static long[] sum = new long[1_000_005];
+
+    public static long[] count = new long[10000];
 
     public static int n;
 
-    public static int[] arr = new int[305];
+    public static int m;
 
-    public static void main(String[] args) throws IOException {
+    public static long result;
 
-        input();
-        solve();
-        output();
-    }
-
-    public static void input() throws IOException {
-        n = Integer.parseInt(br.readLine());
-
-        for (int i = 1; i <= n; i++) {
-            int v = Integer.parseInt(br.readLine());
-            arr[i] = v;
-        }
-    }
 
     public static void solve() {
-        dp[1][1] = arr[1];
-        dp[2][1] = arr[2];
-        dp[2][2] = arr[1] + arr[2];
 
-
-        for (int i = 3; i <= n; i++) {
-                dp[i][1] = Math.max(dp[i-2][2], dp[i-2][1]) + arr[i];
-                dp[i][2] = dp[i-1][1] + arr[i];
+        for (int i = 0; i <= n; i++) {
+            count[(int)(sum[i]%m)]++;
         }
+
+        for (int i = 0; i <= m; i++) {
+            result += (count[i] * (count[i]-1))/2;
+        }
+
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(Math.max(dp[n][1], dp[n][2])));
+        bw.write(String.valueOf(result));
         bw.flush();
+    }
+
+
+    public static void input() throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 1; i <= n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+            sum[i] = sum[i-1] + arr[i];
+        }
+    }
+
+
+
+    public static void main(String[] args) throws IOException {
+        input();
+        solve();
+        output();
     }
 
 }
