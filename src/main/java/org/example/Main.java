@@ -1,11 +1,11 @@
 
 package org.example;
 
-// 나머지 합
+//슈퍼마리오
 
+import java.util.*;
 import java.util.stream.*;
 import java.io.*;
-import java.util.*;
 
 
 public class Main {
@@ -14,50 +14,11 @@ public class Main {
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static long[] arr = new long[1_000_005];
+    public static int result = Integer.MAX_VALUE;
 
-    public static long[] sum = new long[1_000_005];
+    public static int[] arr = new int[15];
 
-    public static long[] count = new long[10000];
-
-    public static int n;
-
-    public static int m;
-
-    public static long result;
-
-
-    public static void solve() {
-
-        for (int i = 0; i <= n; i++) {
-            count[(int)(sum[i]%m)]++;
-        }
-
-        for (int i = 0; i <= m; i++) {
-            result += (count[i] * (count[i]-1))/2;
-        }
-
-    }
-
-    public static void output() throws IOException {
-        bw.write(String.valueOf(result));
-        bw.flush();
-    }
-
-
-    public static void input() throws IOException {
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-
-        st = new StringTokenizer(br.readLine());
-
-        for (int i = 1; i <= n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-            sum[i] = sum[i-1] + arr[i];
-        }
-    }
-
+    public static int[] sum = new int[15];
 
 
     public static void main(String[] args) throws IOException {
@@ -65,5 +26,35 @@ public class Main {
         solve();
         output();
     }
+
+    public static void input() throws IOException {
+        for (int i = 0; i < 10; i++) {
+            int v = Integer.parseInt(br.readLine());
+            arr[i+1] = v;
+        }
+    }
+
+    public static void solve() throws IOException {
+        for (int i = 1; i <= 10; i++) {
+            sum[i] = sum[i-1] + arr[i];
+        }
+
+
+        int temp = Math.abs(sum[1] - 100);
+        result = sum[1];
+
+        for (int i = 2; i <= 10; i++) {
+            if (temp >= Math.abs(sum[i] - 100) ) {
+                temp = Math.abs(sum[i] - 100);
+                result = sum[i];
+            }
+        }
+    }
+
+    public static void output() throws IOException {
+        bw.write(String.valueOf(result));
+        bw.flush();
+    }
+
 
 }
