@@ -1,7 +1,7 @@
 
 package org.example;
 
-//슈퍼마리오
+// 요세푸스 문제
 
 import java.util.*;
 import java.util.stream.*;
@@ -10,51 +10,64 @@ import java.io.*;
 
 public class Main {
 
+
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static int result = Integer.MAX_VALUE;
+    public static List<Integer> result = new ArrayList<>();
 
-    public static int[] arr = new int[15];
+    public static int n;
 
-    public static int[] sum = new int[15];
+    public static int k;
 
-
-    public static void main(String[] args) throws IOException {
-        input();
-        solve();
-        output();
-    }
+    public static Deque<Integer> dq = new ArrayDeque<>();
 
     public static void input() throws IOException {
-        for (int i = 0; i < 10; i++) {
-            int v = Integer.parseInt(br.readLine());
-            arr[i+1] = v;
-        }
-    }
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
-    public static void solve() throws IOException {
-        for (int i = 1; i <= 10; i++) {
-            sum[i] = sum[i-1] + arr[i];
-        }
-
-
-        int temp = Math.abs(sum[1] - 100);
-        result = sum[1];
-
-        for (int i = 2; i <= 10; i++) {
-            if (temp >= Math.abs(sum[i] - 100) ) {
-                temp = Math.abs(sum[i] - 100);
-                result = sum[i];
-            }
+        for (int i = 1; i <= n; i++) {
+            dq.addLast(i);
         }
     }
 
     public static void output() throws IOException {
-        bw.write(String.valueOf(result));
+
+        bw.write("<");
+        for (int i = 0; i < result.size(); i++) {
+            bw.write(String.valueOf(result.get(i)));
+            if (i != result.size() - 1) {
+                bw.write(", ");
+            }
+        }
+
+        bw.write(">");
         bw.flush();
     }
+
+    public static void solve() {
+        while (dq.size() > 0) {
+
+            for (int i = 1; i < k ; i++) {
+                int last = dq.removeFirst();
+                dq.addLast(last);
+            }
+
+            int find = dq.removeFirst();
+            result.add(find);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        input();
+        solve();
+        output();
+
+    }
+
 
 
 }
