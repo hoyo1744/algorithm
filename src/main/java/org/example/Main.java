@@ -1,13 +1,17 @@
 
 package org.example;
 
+
 import java.util.*;
 import java.io.*;
-import java.util.Collections.*;
+import java.util.stream.*;
+
 
 public class Main {
 
     public static int n;
+
+    public static int m;
 
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -15,16 +19,7 @@ public class Main {
 
     public static int result;
 
-    public static int R = 1;
-
-    public static int G = 2;
-
-    public static int B = 3;
-
-    public static int[][] dp = new int[5][1005];
-
-    public static int[][] arr = new int[5][1005];
-
+    public static List<Integer> list = new ArrayList<>();
 
 
 
@@ -35,34 +30,53 @@ public class Main {
     }
 
     public static void input() throws IOException {
+
         String str = br.readLine();
         StringTokenizer st = new StringTokenizer(str);
 
         n = Integer.parseInt(st.nextToken());
 
-        for (int i = 1; i <= n; i++) {
-            str = br.readLine();
-            st = new StringTokenizer(str);
+        str = br.readLine();
+        st = new StringTokenizer(str);
 
-            for (int j = 1; j <= 3; j++) {
-                arr[j][i] = Integer.parseInt(st.nextToken());
-            }
+        m =  Integer.parseInt(str);
+
+        str = br.readLine();
+        st = new StringTokenizer(str);
+        for (int i = 0; i < n; i++) {
+            int v = Integer.parseInt(st.nextToken());
+            list.add(v);
         }
     }
 
-    public static void solve() throws IOException {
+    public static void solve() {
 
-        dp[R][1] = arr[R][1];
-        dp[G][1] = arr[G][1];
-        dp[B][1] = arr[B][1];
+        Collections.sort(list, Comparator.naturalOrder());
 
-        for (int i = 2; i <= n; i++) {
-            dp[R][i] = Math.min(dp[G][i-1], dp[B][i-1]) + arr[R][i];
-            dp[G][i] = Math.min(dp[R][i-1], dp[B][i-1]) + arr[G][i];
-            dp[B][i] = Math.min(dp[R][i-1], dp[G][i-1]) + arr[B][i];
+        int start = 0;
+        int end = n - 1;
+
+        while (start < end && end < n) {
+            int cmp = list.get(start) + list.get(end);
+            if (cmp == m) {
+                start++;
+                end--;
+                result++;
+            } else if (cmp > m) {
+                end--;
+                if (start >= end && end >= 0) {
+                    end = start;
+                }
+            } else {
+                start++;
+                if (start >= end && start < n) {
+                    end = start;
+                }
+
+            }
+
         }
 
-        result = Math.min(Math.min(dp[R][n], dp[G][n]), dp[B][n]);
     }
 
     public static void output() throws IOException {
